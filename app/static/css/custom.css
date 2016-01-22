@@ -136,7 +136,7 @@ pre {
 	text-decoration: underline;
 }
 /*form element styling*/
-#installationComments, #reason1Comments, #reason1StepsComments, #reason2Comments, #reason2StepsComments, #startUpComments, #specialEventsBox{
+#installationComments, #reason1Comments, #reason1StepsComments, #reason2Comments, #reason2StepsComments, #startupComments, #specialEventsBox{
 	width: 400px;
 }
 /* Alert Box */

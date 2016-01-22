@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from wtforms import StringField, SelectField  # , RadioField, TextAreaField
+from wtforms import StringField, SelectField, TextAreaField
 from wtforms import SubmitField
 from wtforms.validators import DataRequired
 
@@ -50,12 +50,8 @@ class bushingInfo(Form):
                  ('9212 (Waterville)', '9212 (Waterville)')
         ])
     # Installation Section
-    # installationIssues = RadioField(u'Installation Issues',
-    #     choices=[
-    #             ('Yes', 'Yes'),
-    #             ('No', 'No')
-    #     ])
-    # installationComments = TextAreaField(u'Installation Comments')
+    installationComments = TextAreaField(u'Installation Comments')
+    startupComments = TextAreaField(u'Installation Comments')
 
     # Submit Button
     submit = SubmitField("Submit")

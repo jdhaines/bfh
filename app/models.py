@@ -7,6 +7,8 @@ class Bushing(db.Model):
     bushingModel = db.Column(db.String(20), index=True)
     bushingPlant = db.Column(db.String(20), index=True)
     bushingFurnace = db.Column(db.String(40), index=True)
+    installationComments = db.Column(db.Text, index=True)
+    startupComments = db.Column(db.Text, index=True)
 
     def __repr__(self):
         return '<Bushing %s (%s)>' % (self.bushingSerial, self.bushingModel)

@@ -31,11 +31,13 @@ def get_sn():
             # grab data
             lookup = models.Bushing.query.filter_by(bushingSerial=testbushingSerial).first()
             if lookup == None:
+                # Bushing isn't in the database, send them to enter new data
                 return render_template('plants.html',
                         title="Plants Input Page - Bushing Failure Historian",
                         form=form2, newBushingEntry=True)
             else:
-                # return lookup.bushingModel
+                # Bushing is in the database, send them to edit data & display
+                # the known data from the db
                 return render_template('plants.html',
                         title="Plants Input Page - Bushing Failure Historian",
                         form=form2, lookup=lookup, bushingExists=True)
@@ -69,7 +71,9 @@ def plants():
                         bushingSerial=form.bushingSerial.data,
                         bushingModel=form.bushingModel.data,
                         bushingPlant=form.bushingPlant.data,
-                        bushingFurnace=form.bushingFurnace.data)
+                        bushingFurnace=form.bushingFurnace.data,
+                        installationComments=form.installationComments.data,
+                        startupComments=form.startupComments.data)
 
                 # Add it to the database session
                 db.session.add(new_bushing)

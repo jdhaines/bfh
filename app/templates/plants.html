@@ -35,37 +35,32 @@
         <div class="alert-box error">{{ message }}</div>
     {% endfor %}
     <h1>Forming Room Information</h1>
-    {% if lookup %} <!-- bushing is in the db -->
     <form action="{{ url_for('plants')}}" method="POST" name="bushingInfo">
         {{ form.hidden_tag() }}
         <div class="bushingInformationSection">
             <h3>Bushing Information</h3>
             <p>Enter the Bushing Serial Number: {{ form.bushingSerial(size=18) }}</p>
-            <p>Select the Bushing Model: {{ form.bushingModel(size=1) }} ({%print(lookup.bushingModel)%})</p>
-            <p>Select the Bushing Plant: {{ form.bushingPlant(size=1) }} ({%print(lookup.bushingPlant)%})</p>
-            <p>Select the Bushing Furnace: {{ form.bushingFurnace(size=1) }} ({%print(lookup.bushingFurnace)%})</p>
+            <p>Select the Bushing Model: {{ form.bushingModel(size=1) }}
+            {% if lookup %}{{lookup.bushingModel}}{% endif %}</p>
+            <p>Select the Bushing Plant: {{ form.bushingPlant(size=1) }}
+            {% if lookup %}{{lookup.bushingPlant}}{% endif %}</p>
+            <p>Select the Bushing Furnace: {{ form.bushingFurnace(size=1) }}
+            {% if lookup %}{{lookup.bushingFurnace}}{% endif %}</p>
             <!-- <p class="lookup_button"><input type="submit" value="Lookup Bushing Info"></p> -->
             <div class="clearfix"></div>
         </div>
-        <p><input type="submit" value="Submit"></p>
-    </form>
-
-    {% else %} <!-- bushing is not in the db -->
-    <form action="{{ url_for('plants')}}" method="POST" name="bushingInfo">
-        {{ form.hidden_tag() }}
-        <div class="bushingInformationSection">
-            <h3>Bushing Information</h3>
-            <p>Enter the Bushing Serial Number: {{ form.bushingSerial(size=18) }}</p>
-            <p>Select the Bushing Model: {{ form.bushingModel(size=1) }}</p>
-            <p>Select the Bushing Plant: {{ form.bushingPlant(size=1) }}</p>
-            <p>Select the Bushing Furnace: {{ form.bushingFurnace(size=1) }}</p>
-            <!-- <p class="lookup_button"><input type="submit" value="Lookup Bushing Info"></p> -->
-            <div class="clearfix"></div>
+        <div class="installationSection">
+            <h3>Installation & Early Life</h3>
+            <p>Were there any installation issues?</p>
+            {{comment1 = "test"}}            
+            <p>{{ form.installationComments(rows="6", placeholder=comment1)}}<p>
+            <p>Were there any start-up issues?</p>
+            <p>{{ form.startupComments(rows="6")}}
+            {% if lookup %}{{lookup.startupComments}}{% endif %}</p>
         </div>
         <p><input type="submit" value="Submit"></p>
     </form>
     {% endif %}
-    {% endif %}
-</div> <!-- end form_wrapper
+</div> <!-- end form_wrapper -->
 <!-- main div is ended here -->
 {% endblock %}
