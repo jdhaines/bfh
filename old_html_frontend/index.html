@@ -1,0 +1,421 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>JM Bushing Data Historian</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <!-- Place favicon.ico in the root directory -->
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/formalize.css">
+        <link rel="stylesheet" href="css/custom.css">
+        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+        <link rel="icon" type="image/vnd.microsoft.icon" href="http://www.jm.com/etc/designs/jm/favicon.ico">
+        <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="http://www.jm.com/etc/designs/jm/favicon.ico">
+        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Add your site or application content here -->
+        <div class="wrapper">
+        	<div class="preHeader">
+        		<ul>
+        			<li><a href="http://jmconnection.jm.com/irj/portal">JMConnection</a></li>
+        		</ul>
+        	</div> <!-- end preHeader -->
+        	<div class="header">
+        		<div class="clearfix"></div><img id="headerLogo" src="/img/logo-johnsmanville-white.png">
+                <h1 id="mainTitle">JM Bushing Data Historian</h1>
+        		<h3 id="tagline">A useful tool to enter and query detailed information about a bushing's installation, life, and removal.</h3>
+                <div class="clearfix"></div>
+        	</div> <!-- end header -->
+        	<div class="main">
+                <h1>Forming Room Information</h1>
+        		<form action="#" method="post" enctype="multipart/form-data" onsubmit="return false">
+        			<div class="bushingInformationSection">
+                        <h3>Bushing Information</h3>
+                        <p>
+                            <label class="labels" for="bushingSerial">
+                                Enter the Bushing Serial Number
+                            </label>
+                            <input type="text" id="bushingSerial" name="bushingSerial" />
+                        </p>
+                        <p>
+                            <label class="labels" for="bushingModel">
+                                Select the Bushing Model
+                            </label>
+                            <select id="bushingModel" name="bushingModel">
+                                <option value="">Select one...</option>
+                                <optgroup label="Transverse">
+                                    <option value="">D41T-147</option>
+                                    <option value="">D42S-340</option>
+                                    <option value="">D42T-345</option>
+                                    <option value="">D44T-340</option>
+                                    <option value="">D48S-300</option>
+                                    <option value="">D48T-300</option>
+                                    <option value="">D48T-380</option>
+                                </optgroup>
+                                <optgroup label="Longitudinal">
+                                    <option value="">D34-130</option>
+                                    <option value="">D34-185</option>
+                                    <option value="">D34-205</option>
+                                    <option value="">D34-220</option>
+                                    <option value="">D48-260</option>
+                                    <option value="">D48-375</option>
+                                </optgroup>
+                                <optgroup label="Legacy">
+                                    <option value="">D34-140</option>
+                                    <option value="">D34-250</option>
+                                    <option value="">D40-315</option>
+                                    <option value="">D45-125</option>
+                                </optgroup>
+                            </select>
+                        </p>
+                        <p>
+                            <label class="labels" for="bushingPlant">
+                                Select the Bushing Plant
+                            </label>
+                            <select id="bushingPlant" name="bushingPlant">
+                                <option value="">Select one...</option>
+                                <option value="">Cleburne</option>
+                                <option value="">Etowah</option>
+                                <option value="">Waterville</option>
+                            </select>
+                        </p>
+                        <p>
+                            <label class="labels" for="bushingFurance">
+                                Select the Bushing Furnace
+                            </label>
+                            <select id="bushingFurance" name="bushingFurance">
+                                <option value="">Select one...</option>
+                                <option value="">1901 (Cleburne)</option>
+                                <option value="">3303 (Etowah)</option>
+                                <option value="">3304 (Etowah)</option>
+                                <option value="">9211 (Waterville)</option>
+                                <option value="">9212 (Waterville)</option>
+                            </select>
+                        </p>
+                    </div>
+                    <div class="installationSection">
+                        <hr class="style-one" />
+                        <h3>Installation &amp; Early Life</h3>
+                        <p>
+                            <label class="labels" for="installationIssues">
+                                Were there any bushing installation issues?
+                            </label>
+                            <br />
+                            <input type="radio" checked name="installationIssues" onclick="javascript:checkInstallation();" id="yesInstallationIssues" />
+                            <label class="labels" for="yesInstallationIssues">
+                            Yes
+                            </label>
+                            <br />
+                            <input type="radio" name="installationIssues" onclick="javascript:checkInstallation();" id="noInstallationIssues" />
+                            <label class="labels" for="noInstallationIssues">
+                            No
+                            </label>
+                        </p>
+                        <p id="installationComments">
+                            <label class="labels" for="installationComments">
+                            Installation Comments
+                            </label>
+                            <br />
+                            <textarea name="installationComments" rows="5" placeholder="The bushing block had a small crack which was repaired..."></textarea>
+                        </p>
+                        <p>
+                            <label class="labels" for="startUpIssues">
+                                Were there any bushing start up issues?
+                            </label>
+                            <br />
+                            <input type="radio" checked name="startUpIssues" onclick="javascript:checkStartUp();" id="yesstartUpIssues" />
+                            <label class="labels" for="yesstartUpIssues">
+                            Yes
+                            </label>
+                            <br />
+                            <input type="radio" name="startUpIssues" onclick="javascript:checkStartUp();" id="nostartUpIssues" />
+                            <label class="labels" for="nostartUpIssues">
+                            No
+                            </label>
+                        </p>
+                        <p id="startUpComments">
+                            <label class="labels" for="startUpComments">
+                            Start Up Comments
+                            </label>
+                            <br />
+                            <textarea name="startUpComments" rows="5" placeholder="There were cooling loop problems we had to sort out..."></textarea>
+                        </p>
+                    </div>
+                    <div class="failure1Section">
+                        <hr />
+                        <h3>Primary Failure Mode</h3>
+                        <p>
+    						<label class="labels" for="primaryReason1">
+    						Main Reason
+    						</label>
+    				      	<br />
+    				      	<select id="primaryReason1" name="primaryReason1">
+    				        <option value="">Select one...</option>
+                                <optgroup label="Bushing Specific">
+    								<option value="">Glass Leak</option>
+    								<option value="">Damaged Tips</option>
+    								<option value="">Leaking Tips</option>
+    								<option value="">Ceramic in Tips</option>
+    								<option value="">Global Sag</option>
+    								<option value="">Localized Sag</option>
+    								<option value="">Flood</option>
+    								<option value="">Devitrification</option>
+    								<option value="">Poor Performance</option>
+    								<option value="">Damaged Tip Plate</option>
+    								<option value="">Profile</option>
+    							</optgroup>
+    							<optgroup label="Forming Room Reasons">
+    								<option value="">Ear Burned Off</option>
+    								<option value="">Leaking Cooling Tube</option>
+    								<option value="">Thermocouple Failure</option>
+    								<option value="">Cooling Ring Failure</option>
+    								<option value="">Damaged Supports</option>
+    								<option value="">Contamination</option>
+    							</optgroup>
+    					        <optgroup label="Business Reasons">
+    								<option value="">Product/Process Change</option>
+    								<option value="">Rebuild</option>
+    								<option value="">Curtailment</option>
+    								<option value="">Experimental</option>
+    						    </optgroup>
+    						    <optgroup label="Other">
+    						    	<option value="">No Damage Identified</option>
+    						    </optgroup>
+    				        </select>
+                        </p>
+                        <p>
+                            <label class="labels" for="reason1Comments">
+                            Primary Failure Reason Comments
+                            </label>
+                            <br />
+                            <textarea id="reason1Comments" name="reason1Comments" rows="5" placeholder="The bushing had a small glass leak in the corner which didn't affect function..."></textarea>
+                        </p>
+                        <p>
+                            <label class="labels" for="reason1Steps">
+                                Were any steps taken to remedy the primary failure reason?
+                            </label>
+                            <br />
+                            <input type="radio" checked name="reason1Steps" onclick="javascript:checkReason1();" id="yesreason1Steps" />
+                            <label class="labels" for="yesreason1Steps">
+                            Yes
+                            </label>
+                            <br />
+                            <input type="radio" name="reason1Steps" onclick="javascript:checkReason1();" id="noreason1Steps" />
+                            <label class="labels" for="noreason1Steps">
+                            No
+                            </label>
+                        </p>
+                        <p id="reason1StepsComments">
+                            <label class="labels" for="reason1StepsComments">
+                            Installation Comments
+                            </label>
+                            <br />
+                            <textarea name="reason1StepsComments" rows="5" placeholder="We used X tool to try and accomplish Y..."></textarea>
+                        </p>
+                        <p>
+                            <label for="reason1Date">
+                                When did this failure mode start causing issues?
+                            </label>
+                            <br />
+                            <input type="date" id="reason1Date" name="reason1Date" />
+                        </p>
+                    </div>
+                    <div class="failure2Section">
+                        <hr />
+                        <h3>Secondary Failure Mode</h3>
+                        <p>
+                            <label class="labels" for="secondaryReason1">
+                            Main Reason
+                            </label>
+                            <br />
+                            <select id="secondaryReason1" name="secondaryReason1">
+                                <option value="">Select one...</option>
+                                <optgroup label="Bushing Specific">
+                                    <option value="1">Glass Leak</option>
+                                    <option value="">Damaged Tips</option>
+                                    <option value="">Leaking Tips</option>
+                                    <option value="">Ceramic in Tips</option>
+                                    <option value="">Global Sag</option>
+                                    <option value="">Localized Sag</option>
+                                    <option value="">Flood</option>
+                                    <option value="">Devitrification</option>
+                                    <option value="">Poor Performance</option>
+                                    <option value="">Damaged Tip Plate</option>
+                                    <option value="">Profile</option>
+                                </optgroup>
+                                <optgroup label="Forming Room Reasons">
+                                    <option value="">Ear Burned Off</option>
+                                    <option value="">Leaking Cooling Tube</option>
+                                    <option value="">Thermocouple Failure</option>
+                                    <option value="">Cooling Ring Failure</option>
+                                    <option value="">Damaged Supports</option>
+                                    <option value="">Contamination</option>
+                                </optgroup>
+                                <optgroup label="Business Reasons">
+                                    <option value="">Product/Process Change</option>
+                                    <option value="">Rebuild</option>
+                                    <option value="">Curtailment</option>
+                                    <option value="">Experimental</option>
+                                </optgroup>
+                                <optgroup label="Other">
+                                    <option value="">No Damage Identified</option>
+                                </optgroup>
+                            </select>
+                        </p>
+                        <p>
+                            <label class="labels" for="reason2Comments">
+                            Secondary Failure Reason Comments
+                            </label>
+                            <br />
+                            <textarea id="reason2Comments" name="reason2Comments" rows="5" placeholder="The bushing also had a small glass leak in the corner which didn't affect function..."></textarea>
+                        </p>
+                        <p>
+                            <label class="labels" for="reason2Steps">
+                                Were any steps taken to remedy the secondary failure reason?
+                            </label>
+                            <br />
+                            <input type="radio" checked name="reason2Steps" onclick="javascript:checkReason2();" id="yesreason2Steps" />
+                            <label class="labels" for="yesreason2Steps">
+                            Yes
+                            </label>
+                            <br />
+                            <input type="radio" name="reason2Steps" onclick="javascript:checkReason2();" id="noreason2Steps" />
+                            <label class="labels" for="noreason2Steps">
+                            No
+                            </label>
+                        </p>
+                        <p id="reason2StepsComments">
+                            <label class="labels" for="reason2StepsComments">
+                            Installation Comments
+                            </label>
+                            <br />
+                            <textarea name="reason2StepsComments" rows="5" placeholder="We used X tool to try and accomplish Y..."></textarea>
+                        </p>
+                        <p>
+                            <label for="reason2Date">
+                                When did this failure mode start causing issues?
+                            </label>
+                            <br />
+                            <input type="date" id="reason2Date" name="reason2Date" />
+                        </p>
+                    </div>
+                    <div class="specialEventsSection">
+                        <hr />
+                        <h3>Special Events</h3>
+                        <p>
+                            <label class="labels" for="specialEventsYesNo">
+                                Were there any special events that affected bushing failure?
+                            </label>
+                            <br />
+                            <input type="radio" checked name="specialEventsYesNo" onclick="javascript:checkSpecialEvents();" id="specialEventsYes" />
+                            <label class="labels" for="specialEventsYes">
+                            Yes
+                            </label>
+                            <br />
+                            <input type="radio" name="specialEventsYesNo" onclick="javascript:checkSpecialEvents();" id="specialEventsNo" />
+                            <label class="labels" for="specialEventsNo">
+                            No
+                            </label>
+                        </p>
+                        <p id="specialEvents">
+                            <label class="labels">
+                                Choose one or more special event.
+                            </label> 
+                            <br />
+                            <select id="specialEventsBox" name="specialEvents" multiple="multiple">
+                                <option value="1">Large Batch Deviation</option>
+                                <option value="2">Unexpected Power Failure</option>
+                                <option value="3">Unplanned Bushing Cycling</option>
+                                <option value="4">None</option>
+                            </select>
+                        </p>
+                    </div>
+                    <div class="removalSection">
+                        <hr />
+                        <h3>Bushing Removal and Return</h3>
+                        <p>
+                            questions here about bushing removal, breakdown, and shipping
+                        </p>
+                    </div>
+    			</form>
+                <h1>Tucson Teardown Information</h1>
+                <form action="#" method="post" enctype="multipart/form-data" onsubmit="return false">
+                    <div class="tasReceivingSection">
+                        <h3>TAS Receving</h3>
+                        <p>
+                            <label for="tasReceiveDate">
+                                When was the bushing received by TAS?
+                            </label>
+                            <br />
+                            <input type="datetime-local" id="tasReceiveDate" name="tasReceiveDate" />
+                        </p>
+                    </div>
+                    <div class="tasTeardownSection">
+                        <h3>TAS Standard Teardown</h3>
+                        <p>
+                            <label for="tasTeardownDate">
+                                When did bushing teardown start?
+                            </label>
+                            <br />
+                            <input type="datetime-local" id="tasTeardownDate" name="tasTeardownDate" />
+                        </p>
+                    </div>
+                    <div class="tasPostMortemSection">
+                        <h3>TAS Post Mortem Teardown</h3>
+                        <p>
+                            <label class="labels" for="tasPostMortemYesNo">
+                                Was a full post mortem requested for this bushing?
+                            </label>
+                            <br />
+                            <input type="radio" checked name="tasPostMortemYesNo" onclick="javascript:checkTasPostMortem();" id="tasPostMortemYes" />
+                            <label class="labels" for="tasPostMortemYes">
+                            Yes
+                            </label>
+                            <br />
+                            <input type="radio" name="tasPostMortemYesNo" onclick="javascript:checkTasPostMortem();" id="tasPostMortemNo" />
+                            <label class="labels" for="tasPostMortemNo">
+                            No
+                            </label>
+                        </p>
+                        <p id="tasPostMortem">
+                            post mortem questions here
+                        </p>
+                    </div>
+                </form>
+        	</div> <!-- end main -->
+        	<div class="footer">
+        		<ul>
+        			<li><a href="#">Walkthrough</a></li>
+        			<li><a href="mailto:Josh.Haines@jm.com?cc=Jim.Betsinger@jm.com&Subject=JM%20Bushing%20Data%20Historian">Contact Us</a></li>
+        		</ul>
+        	</div> <!-- end footer -->
+        </div> <!-- end wrapper -->
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+        <script scr="js/jquery.formalize.min.js"></script>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <!-- <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='https://www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+        </script> -->
+    </body>
+</html>

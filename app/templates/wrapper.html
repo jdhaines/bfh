@@ -1,0 +1,31 @@
+<!doctype html>
+<html class="no-js" lang="">
+  <head>
+    {% include 'head_includes.html' %}
+    {% if title %}
+    <title>{{ title }}</title>
+    {% else %}
+    <title>JM Bushing Failure Historian</title>
+    {% endif %}
+  </head>
+  <body>
+  <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+    <div class="wrapper">
+      <div class="preHeader">
+        {% include 'preheader.html' %}
+      </div> <!-- end preHeader -->
+      <div class="header blue_box">
+        {% include 'header.html' %}
+      </div> <!-- end header -->
+      <div class="main">
+        {% block content %}{% endblock %}
+      </div> <!-- end main -->
+      <div class="footer">
+        {% include 'footer.html' %}
+      </div> <!-- end footer -->
+      {% include 'body_includes.html' %}
+    </div> <!-- end wrapper -->
+  </body>
+</html>

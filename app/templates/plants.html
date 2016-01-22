@@ -1,0 +1,71 @@
+{% extends "wrapper.html" %}
+{% block content %}
+<!-- main div is started here -->
+<div class="form_wrapper">
+    {% if newBushingEntry %}
+        <div class="alert-box success">
+        <p>Your bushing is not in the database.  Please enter new details.</p>
+        </div>
+    {% endif %}
+    {% if bushingExists %}
+    <div class="alert-box success">
+    <p>Your bushing was found.  The database details are shown.  Make any changes needed and re-submit.</p>
+    </div>
+    {% endif %}
+    {% if success %}
+        <div class="alert-box success">
+            <p>Your bushing information has been successfully submitted / updated.
+            <br/>Thank you!</p>
+            <form action="/" method="GET">
+                <p><input class="home_button" type="submit" value="Home" name="Home"></p>
+            </form>
+        </div>
+
+    {% else %}
+    {% for message in form.bushingSerial.errors %}
+        <div class="alert-box error">{{ message }}</div>
+    {% endfor %}
+    {% for message in form.bushingModel.errors %}
+        <div class="alert-box error">{{ message }}</div>
+    {% endfor %}
+    {% for message in form.bushingPlant.errors %}
+        <div class="alert-box error">{{ message }}</div>
+    {% endfor %}
+    {% for message in form.bushingFurnace.errors %}
+        <div class="alert-box error">{{ message }}</div>
+    {% endfor %}
+    <h1>Forming Room Information</h1>
+    {% if lookup %} <!-- bushing is in the db -->
+    <form action="{{ url_for('plants')}}" method="POST" name="bushingInfo">
+        {{ form.hidden_tag() }}
+        <div class="bushingInformationSection">
+            <h3>Bushing Information</h3>
+            <p>Enter the Bushing Serial Number: {{ form.bushingSerial(size=18) }}</p>
+            <p>Select the Bushing Model: {{ form.bushingModel(size=1) }} ({%print(lookup.bushingModel)%})</p>
+            <p>Select the Bushing Plant: {{ form.bushingPlant(size=1) }} ({%print(lookup.bushingPlant)%})</p>
+            <p>Select the Bushing Furnace: {{ form.bushingFurnace(size=1) }} ({%print(lookup.bushingFurnace)%})</p>
+            <!-- <p class="lookup_button"><input type="submit" value="Lookup Bushing Info"></p> -->
+            <div class="clearfix"></div>
+        </div>
+        <p><input type="submit" value="Submit"></p>
+    </form>
+
+    {% else %} <!-- bushing is not in the db -->
+    <form action="{{ url_for('plants')}}" method="POST" name="bushingInfo">
+        {{ form.hidden_tag() }}
+        <div class="bushingInformationSection">
+            <h3>Bushing Information</h3>
+            <p>Enter the Bushing Serial Number: {{ form.bushingSerial(size=18) }}</p>
+            <p>Select the Bushing Model: {{ form.bushingModel(size=1) }}</p>
+            <p>Select the Bushing Plant: {{ form.bushingPlant(size=1) }}</p>
+            <p>Select the Bushing Furnace: {{ form.bushingFurnace(size=1) }}</p>
+            <!-- <p class="lookup_button"><input type="submit" value="Lookup Bushing Info"></p> -->
+            <div class="clearfix"></div>
+        </div>
+        <p><input type="submit" value="Submit"></p>
+    </form>
+    {% endif %}
+    {% endif %}
+</div> <!-- end form_wrapper
+<!-- main div is ended here -->
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "wrapper.html" %}
+{% block content %}
+<!-- main div is started here -->
+<div class="form_wrapper">
+    {% for message in form.bushingSerial.errors %}
+        <div class="alert-box error">{{ message }}</div>
+    {% endfor %}
+<h1>Bushing Lookup</h1>
+        <p>Please enter the bushing serial number this entry pertains to.<br/><br/>If the bushing is in the database, you'll be transferred to a form for editing it's information.<br/><br/>If the bushing is not in the database, you'll be transferred to a page to add new details.<br/><br/></p>
+
+    <form action="{{ url_for('get_sn')}}" method="POST" name="bushingSN">
+        {{ form.hidden_tag() }}
+        <p>Enter the Bushing Serial Number: {{ form.bushingSerial(size=18) }}</p>
+        <p><input type="submit" value="Lookup"></p>
+    </form>
+</div> <!-- end form_wrapper -->
+<!-- main div is ended here -->
+{% endblock %}

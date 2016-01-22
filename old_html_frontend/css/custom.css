@@ -1,0 +1,87 @@
+/*body styling*/
+body {
+	font-family: 'Roboto', sans-serif;
+}
+a {
+	text-decoration: inherit;
+	font-style: inherit;
+	color: inherit;
+}
+.labels {
+	padding-right: 10px;
+}
+/*preheader*/
+.preHeader {
+	list-style: none;
+	text-align: center;
+	/*background-color: #f3f3f3;*/
+	font-size: .8em;
+    line-height: .8em;
+}
+.preHeader ul {
+	padding-left: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+.preHeader li {
+	display:inline;
+}
+.preHeader a {
+	display: inline-block;
+	padding: 10px;
+}
+.preHeader a:hover {
+	text-decoration: underline;
+}
+/*header*/
+.header {
+	width: 1000px;
+	background-color: #006BB7;
+	color: #FFFFFF;
+	margin-left: auto;
+	margin-right: auto;
+	overflow: hidden;
+	border: none;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+#headerLogo {
+	margin: 15px;
+	float: left;
+}
+/*main*/
+.main {
+	padding-left: 30px;
+}
+hr {
+	/*border-top: 3px solid #006BB7;*/
+	height: 3px;
+	color: #006BB7;
+	background-image: linear-gradient(to right, #FFFFFF, #006BB7, #FFFFFF);
+}
+/*footer*/
+.footer {
+	list-style: none;
+	text-align: center;
+	background-color: #006BB7;
+	color: #FFFFFF;
+}
+.footer ul {
+	padding-left: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+.footer li {
+	display:inline;
+}
+.footer a {
+	display: inline-block;
+	padding: 10px;
+}
+.footer a:hover {
+	text-decoration: underline;
+}
+/*form element styling*/
+#installationComments, #reason1Comments, #reason1StepsComments, #reason2Comments, #reason2StepsComments, #startUpComments, #specialEventsBox{
+	width: 400px;
+}
