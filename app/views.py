@@ -1,6 +1,8 @@
-from flask import render_template, request, flash  # , redirect
+from flask import render_template, request, flash, make_response
 from app import app, db, models
 from .forms import bushingInfo, bushingSN, extract
+from io import StringIO
+from csv import writer
 
 
 # index view function
@@ -152,8 +154,22 @@ def data_extraction():
                         form=form, noBushing=True)
             else:
                 # Bushing is in the database, get them the information
-                if request.form['singleButton'] == 'DownloadCSV':
+                if request.form['singleButton'] == 'Download CSV':
                     # They clicked download csv
+                    si = StringIO()
+                    cw = writer(si)
+                    cw.writerows(lookup)
+                    output = make_response(si.getvalue())
+                    output.headers["Content-Disposition"] = "attachment; filename=export.csv"
+                    output.headers["Content-type"] = "text/csv"
+                    return output
+
+                    # return render_template('plants.html',
+                    #     title="Plants Input Page - Bushing Failure Historian",
+                    #     form=form, noBushing=True)
                 else:
+                    return render_template('plants.html',
+                        title="Plants Input Page - Bushing Failure Historian",
+                        form=form, noBushing=True)
                     # They clicked display in browser
 # end
