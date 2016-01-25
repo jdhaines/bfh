@@ -3,72 +3,10 @@
 <div class="docwrapper">
 <h1>Documentation - Bushing Failure Historian</h1>  
 	<h2>App Framework and Tools</h2>
-	<p>This app is built using the <a href="http://flask.pocoo.org/">Flask microframework</a>.  This is a python based microframework designed to make buildings powerful apps easier using open source tools.  Flask is freely available under a <a href="https://en.wikipedia.org/wiki/BSD_licenses#3-clause_license_.28.22Revised_BSD_License.22.2C_.22New_BSD_License.22.2C_or_.22Modified_BSD_License.22.29">New BSD License</a> and is suitable for corporate developement.
+	<p>This app is built using the <a href="http://flask.pocoo.org/">Flask microframework</a>.  This is a python based microframework designed to make buildings powerful apps easier using open source tools.  Flask is freely available under a <a href="https://en.wikipedia.org/wiki/BSD_licenses#3-clause_license_.28.22Revised_BSD_License.22.2C_.22New_BSD_License.22.2C_or_.22Modified_BSD_License.22.29">New BSD License</a> and is suitable for corporate developement.</p>
     <hr class="style-one" />
     <h2>Database Schema</h2>
-    <p>The database is a sqlite db.  It follows the schema shown in the image below.  The xml code below is used to load the schema graphic at the <a href="http://ondras.zarovi.cz/sql/demo/">SQL Designer</a> if we need to update the schema.</p>
-    <pre><code>
-&lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;!-- SQL XML created by WWW SQL Designer, https://github.com/ondras/wwwsqldesigner/ --&gt;
-&lt;!-- Active URL: http://ondras.zarovi.cz/sql/demo/ --&gt;
-&lt;sql&gt;
-	&lt;datatypes db="mysql"&gt;
-		&lt;group label="Numeric" color="rgb(238,238,170)"&gt;
-			&lt;type label="Integer" length="0" sql="INTEGER" quote=""/&gt;
-		 	&lt;type label="TINYINT" length="0" sql="TINYINT" quote=""/&gt;
-		 	&lt;type label="SMALLINT" length="0" sql="SMALLINT" quote=""/&gt;
-		 	&lt;type label="MEDIUMINT" length="0" sql="MEDIUMINT" quote=""/&gt;
-		 	&lt;type label="INT" length="0" sql="INT" quote=""/&gt;
-			&lt;type label="BIGINT" length="0" sql="BIGINT" quote=""/&gt;
-			&lt;type label="Decimal" length="1" sql="DECIMAL" re="DEC" quote=""/&gt;
-			&lt;type label="Single precision" length="0" sql="FLOAT" quote=""/&gt;
-			&lt;type label="Double precision" length="0" sql="DOUBLE" re="DOUBLE" quote=""/&gt;
-		&lt;/group&gt;
-
-		&lt;group label="Character" color="rgb(255,200,200)"&gt;
-			&lt;type label="Char" length="1" sql="CHAR" quote="'"/&gt;
-			&lt;type label="Varchar" length="1" sql="VARCHAR" quote="'"/&gt;
-			&lt;type label="Text" length="0" sql="MEDIUMTEXT" re="TEXT" quote="'"/&gt;
-			&lt;type label="Binary" length="1" sql="BINARY" quote="'"/&gt;
-			&lt;type label="Varbinary" length="1" sql="VARBINARY" quote="'"/&gt;
-			&lt;type label="BLOB" length="0" sql="BLOB" re="BLOB" quote="'"/&gt;
-		&lt;/group&gt;
-
-		&lt;group label="Date &amp; Time" color="rgb(200,255,200)"&gt;
-			&lt;type label="Date" length="0" sql="DATE" quote="'"/&gt;
-			&lt;type label="Time" length="0" sql="TIME" quote="'"/&gt;
-			&lt;type label="Datetime" length="0" sql="DATETIME" quote="'"/&gt;
-			&lt;type label="Year" length="0" sql="YEAR" quote=""/&gt;
-			&lt;type label="Timestamp" length="0" sql="TIMESTAMP" quote="'"/&gt;
-		&lt;/group&gt;
-		
-		&lt;group label="Miscellaneous" color="rgb(200,200,255)"&gt;
-			&lt;type label="ENUM" length="1" sql="ENUM" quote=""/&gt;
-			&lt;type label="SET" length="1" sql="SET" quote=""/&gt;
-			&lt;type label="Bit" length="0" sql="bit" quote=""/&gt;
-		&lt;/group&gt;
-	&lt;/datatypes&gt;
-	&lt;table x="492" y="311" name="bushingdb"&gt;
-	&lt;row name="id" null="1" autoincrement="1"&gt;
-	&lt;datatype&gt;INTEGER(5)&lt;/datatype&gt;
-	&lt;default&gt;NULL&lt;/default&gt;&lt;/row&gt;
-	&lt;row name="bushingSerial" null="1" autoincrement="0"&gt;
-	&lt;datatype&gt;VARCHAR(10)&lt;/datatype&gt;
-	&lt;default&gt;NULL&lt;/default&gt;&lt;/row&gt;
-	&lt;row name="bushingModel" null="1" autoincrement="0"&gt;
-	&lt;datatype&gt;VARCHAR(10)&lt;/datatype&gt;
-	&lt;default&gt;NULL&lt;/default&gt;&lt;/row&gt;
-	&lt;row name="bushingPlant" null="1" autoincrement="0"&gt;
-	&lt;datatype&gt;VARCHAR(10)&lt;/datatype&gt;
-	&lt;default&gt;NULL&lt;/default&gt;&lt;/row&gt;
-	&lt;row name="bushingFurnace" null="1" autoincrement="0"&gt;
-	&lt;datatype&gt;VARCHAR(20)&lt;/datatype&gt;
-	&lt;default&gt;NULL&lt;/default&gt;&lt;/row&gt;
-		&lt;key type="PRIMARY" name=""&gt;
-		&lt;part&gt;id&lt;/part&gt;
-		&lt;/key&gt;
-	&lt;/table&gt;
-&lt;/sql&gt;
-    </code></pre>
+    <p>The database is a sqlite db.  It follows the schema shown in the image below.  The xml code (which can be found <a href="static/docs/sql_designer.txt">here</a>) is used to load the schema graphic at <a href="http://ondras.zarovi.cz/sql/demo/">SQL Designer</a> if we need to update the schema.</p>
+    <p id="sqlimg"><img src="static/img/sql_layout.jpg"/></p>
 </div> <!-- end docwrapper -->
 {% endblock %}

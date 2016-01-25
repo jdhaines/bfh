@@ -52,6 +52,64 @@ class bushingInfo(Form):
     # Installation Section
     installationComments = TextAreaField(u'Installation Comments')
     startupComments = TextAreaField(u'Installation Comments')
+    # Primary Failure Mode Section
+    reason1 = SelectField(u'Primary Reason',
+        # validators=[DataRequired('')],
+        choices=[
+                ('', 'Select one...'),
+                ('Glass Leak', 'Glass Leak'),
+                ('Damaged Tips', 'Damaged Tips'),
+                ('Leaking Tips', 'Leaking Tips'),
+                ('Ceramic in Tips', 'Ceramic in Tips'),
+                ('Global Sag', 'Global Sag'),
+                ('Localized Sag', 'Localized Sag'),
+                ('Flood', 'Flood'),
+                ('Devitrification', 'Devitrification'),
+                ('Poor Performance', 'Poor Performance'),
+                ('Damaged Tip Plate', 'Damaged Tip Plate'),
+                ('Profile', 'Profile'),
+                ('Ear Burned Off', 'Ear Burned Off'),
+                ('Leaking Cooling Tube', 'Leaking Cooling Tube'),
+                ('Thermocouple Failure', 'Thermocouple Failure'),
+                ('Cooling Ring Failure', 'Cooling Ring Failure'),
+                ('Damaged Supports', 'Damaged Supports'),
+                ('Contamination', 'Contamination'),
+                ('Product/Process Change', 'Product/Process Change'),
+                ('Rebuild', 'Rebuild'),
+                ('Curtailment', 'Curtailment'),
+                ('Experimental', 'Experimental'),
+                ('No Damage Identified', 'No Damage Identified')
+        ])
+    reason1Comments = TextAreaField(u'Primary Reason Comments')
+    # Secondary Failure Mode Section
+    reason2 = SelectField(u'Secondary Reason',
+        # validators=[DataRequired('')],
+        choices=[
+                ('', 'Select one...'),
+                ('Glass Leak', 'Glass Leak'),
+                ('Damaged Tips', 'Damaged Tips'),
+                ('Leaking Tips', 'Leaking Tips'),
+                ('Ceramic in Tips', 'Ceramic in Tips'),
+                ('Global Sag', 'Global Sag'),
+                ('Localized Sag', 'Localized Sag'),
+                ('Flood', 'Flood'),
+                ('Devitrification', 'Devitrification'),
+                ('Poor Performance', 'Poor Performance'),
+                ('Damaged Tip Plate', 'Damaged Tip Plate'),
+                ('Profile', 'Profile'),
+                ('Ear Burned Off', 'Ear Burned Off'),
+                ('Leaking Cooling Tube', 'Leaking Cooling Tube'),
+                ('Thermocouple Failure', 'Thermocouple Failure'),
+                ('Cooling Ring Failure', 'Cooling Ring Failure'),
+                ('Damaged Supports', 'Damaged Supports'),
+                ('Contamination', 'Contamination'),
+                ('Product/Process Change', 'Product/Process Change'),
+                ('Rebuild', 'Rebuild'),
+                ('Curtailment', 'Curtailment'),
+                ('Experimental', 'Experimental'),
+                ('No Damage Identified', 'No Damage Identified')
+        ])
+    reason2Comments = TextAreaField(u'Secondary Reason Comments')
 
     # Submit Button
     submit = SubmitField("Submit")
@@ -61,5 +119,10 @@ class bushingSN(Form):
     bushingSerial = StringField(u'Bushing S/N',
         validators=[DataRequired('Please enter a serial number (ex. BD012345)')])
     submit = SubmitField("Lookup")
+
+
+class extract(Form):
+    bushingSerial = StringField(u'Bushing S/N')
+    displaySingle = SubmitField("Display in Browser")
 
 # end

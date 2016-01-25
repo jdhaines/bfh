@@ -9,6 +9,10 @@ class Bushing(db.Model):
     bushingFurnace = db.Column(db.String(40), index=True)
     installationComments = db.Column(db.Text, index=True)
     startupComments = db.Column(db.Text, index=True)
+    reason1 = db.Column(db.String(40), index=True)
+    reason1Comments = db.Column(db.Text, index=True)
+    reason2 = db.Column(db.String(40), index=True)
+    reason2Comments = db.Column(db.Text, index=True)
 
     def __repr__(self):
         return '<Bushing %s (%s)>' % (self.bushingSerial, self.bushingModel)

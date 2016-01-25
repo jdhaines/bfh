@@ -1,6 +1,6 @@
 from flask import render_template, request, flash  # , redirect
 from app import app, db, models
-from .forms import bushingInfo, bushingSN
+from .forms import bushingInfo, bushingSN, extract
 
 
 # index view function
@@ -73,7 +73,12 @@ def plants():
                         bushingPlant=form.bushingPlant.data,
                         bushingFurnace=form.bushingFurnace.data,
                         installationComments=form.installationComments.data,
-                        startupComments=form.startupComments.data)
+                        startupComments=form.startupComments.data,
+                        reason1=form.reason1.data,
+                        reason1Comments=form.reason1Comments.data,
+                        reason2=form.reason2.data,
+                        reason2Comments=form.reason2Comments.data
+                        )
 
                 # Add it to the database session
                 db.session.add(new_bushing)
@@ -81,13 +86,24 @@ def plants():
                 # Commit the new bushing to the database
                 db.session.commit()
             else:  # bushing exists, update it
-                # return form.bushingModel.data
                 if form.bushingModel.data:
                     lookup.bushingModel = form.bushingModel.data
                 if form.bushingPlant.data:
                     lookup.bushingPlant = form.bushingPlant.data
                 if form.bushingFurnace.data:
                     lookup.bushingFurnace = form.bushingFurnace.data
+                if form.installationComments.data:
+                    lookup.installationComments = form.installationComments.data
+                if form.startupComments.data:
+                    lookup.startupComments = form.startupComments.data
+                if form.reason1.data:
+                    lookup.reason1 = form.reason1.data
+                if form.reason1Comments.data:
+                    lookup.reason1Comments = form.reason1Comments.data
+                if form.reason2.data:
+                    lookup.reason2 = form.reason2.data
+                if form.reason2Comments.data:
+                    lookup.reason2Comments = form.reason2Comments.data
 
                 # Commit the updated bushing to the database
                 db.session.commit()
@@ -106,4 +122,38 @@ def documentation():
     return render_template("documentation.html",
                            title="Documentation - Bushing Failure Historian")
 
+
+# data extraction page
+@app.route("/data_extraction", methods=['GET', 'POST'])
+def data_extraction():
+    form = extract()
+    return render_template("data-extraction.html",
+                           title="Data Extraction - Bushing Failure Historian",
+                           form=form)
+    if request.method =='POST':
+        # form input isn't correct
+        if form.validate() == False:
+
+            # Re-show the get_sn page
+            return render_template("data-extraction.html",
+                           title="Data Extraction - Bushing Failure Historian",
+                           form=form)
+        # form input is correct, do the database thing
+        else:
+            # save the bushing serial number
+            testbushingSerial = form.bushingSerial.data
+
+            # grab data
+            lookup = models.Bushing.query.filter_by(bushingSerial=testbushingSerial).first()
+            if lookup == None:
+                # Bushing isn't in the database, throw an error.
+                return render_template('plants.html',
+                        title="Plants Input Page - Bushing Failure Historian",
+                        form=form, noBushing=True)
+            else:
+                # Bushing is in the database, get them the information
+                if request.form['singleButton'] == 'DownloadCSV':
+                    # They clicked download csv
+                else:
+                    # They clicked display in browser
 # end

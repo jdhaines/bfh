@@ -53,6 +53,24 @@
 <row name="bushingFurnace" null="1" autoincrement="0">
 <datatype>VARCHAR(20)</datatype>
 <default>NULL</default></row>
+<row name="installationComments" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
+<row name="startupComments" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
+<row name="reason1" null="1" autoincrement="0">
+<datatype>VARCHAR(40)</datatype>
+<default>NULL</default></row>
+<row name="reason1Comments" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
+<row name="reason2" null="1" autoincrement="0">
+<datatype>VARCHAR(40)</datatype>
+<default>NULL</default></row>
+<row name="reason2Comments" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>

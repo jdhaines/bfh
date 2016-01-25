@@ -34,29 +34,49 @@
     {% for message in form.bushingFurnace.errors %}
         <div class="alert-box error">{{ message }}</div>
     {% endfor %}
-    <h1>Forming Room Information</h1>
+    <!-- <h1>Forming Room Information</h1> -->
     <form action="{{ url_for('plants')}}" method="POST" name="bushingInfo">
         {{ form.hidden_tag() }}
         <div class="bushingInformationSection">
-            <h3>Bushing Information</h3>
+            <h1>Bushing Information</h1>
             <p>Enter the Bushing Serial Number: {{ form.bushingSerial(size=18) }}</p>
-            <p>Select the Bushing Model: {{ form.bushingModel(size=1) }}
-            {% if lookup %}{{lookup.bushingModel}}{% endif %}</p>
-            <p>Select the Bushing Plant: {{ form.bushingPlant(size=1) }}
-            {% if lookup %}{{lookup.bushingPlant}}{% endif %}</p>
-            <p>Select the Bushing Furnace: {{ form.bushingFurnace(size=1) }}
-            {% if lookup %}{{lookup.bushingFurnace}}{% endif %}</p>
+            <!-- generates the placeholder -->
+            {% if lookup %}{% set a = form.bushingModel.process_data(lookup.bushingModel) %}{% endif %}
+            <p>Bushing Model: {{ form.bushingModel(size=1) }}</p>
+            {% if lookup %}{% set b = form.bushingPlant.process_data(lookup.bushingPlant) %}{% endif %}
+            <p>Bushing Plant: {{ form.bushingPlant(size=1) }}</p>
+            {% if lookup %}{% set c = form.bushingFurnace.process_data(lookup.bushingFurnace) %}{% endif %}
+            <p>Bushing Furnace: {{ form.bushingFurnace(size=1) }}</p>
             <!-- <p class="lookup_button"><input type="submit" value="Lookup Bushing Info"></p> -->
             <div class="clearfix"></div>
         </div>
+        <hr class="style-one" />
         <div class="installationSection">
-            <h3>Installation & Early Life</h3>
+            <h1>Installation & Early Life</h1>
             <p>Were there any installation issues?</p>
-            {{comment1 = "test"}}            
-            <p>{{ form.installationComments(rows="6", placeholder=comment1)}}<p>
+            {% if lookup %}{% set d = form.installationComments.process_data(lookup.installationComments) %}{% endif %}
+            <p>{{ form.installationComments(rows="6")}}<p>
             <p>Were there any start-up issues?</p>
+            {% if lookup %}{% set e = form.startupComments.process_data(lookup.startupComments) %}{% endif %}
             <p>{{ form.startupComments(rows="6")}}
-            {% if lookup %}{{lookup.startupComments}}{% endif %}</p>
+        </div>
+        <hr class="style-one" />
+        <div class="failure1Section">
+            <h1>Primary Failure Mode</h1>
+            {% if lookup %}{% set f = form.reason1.process_data(lookup.reason1) %}{% endif %}
+            <p>Primary Failure Mode: {{ form.reason1(size=1) }}</p>
+            <p>Comments:</p>
+            {% if lookup %}{% set g = form.reason1Comments.process_data(lookup.reason1Comments) %}{% endif %}
+            <p>{{ form.reason1Comments(rows="6")}}<p>
+        </div>
+        <hr class="style-one" />
+        <div class="failure2Section">
+            <h1>Secondary Failure Mode</h1>
+            {% if lookup %}{% set h = form.reason2.process_data(lookup.reason2) %}{% endif %}
+            <p>Secondary Failure Mode: {{ form.reason2(size=1) }}</p>
+            <p>Comments:</p>
+            {% if lookup %}{% set i = form.reason2Comments.process_data(lookup.reason2Comments) %}{% endif %}
+            <p>{{ form.reason2Comments(rows="6")}}<p>
         </div>
         <p><input type="submit" value="Submit"></p>
     </form>
