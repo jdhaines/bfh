@@ -128,51 +128,53 @@ def documentation():
 # data extraction page
 @app.route("/data_extraction", methods=['GET', 'POST'])
 def data_extraction():
-    form1 = singleExtract()
-    return render_template("data-extraction.html",
-                           title="Data Extraction - Bushing Failure Historian",
-                           form=form1)
-    if request.method =='POST':
-        # form input isn't correct
-        if form1.validate() == False:
+    form = singleExtract()
 
-            # Re-show the get_sn page
-            return render_template("data-extraction.html",
-                           title="Data Extraction - Bushing Failure Historian",
-                           form=form1)
+    if request.method == 'POST':
+
+        # form entry isn't correct
+        if form.validate() == False:
+
+            # Re-show the plants page
+            return render_template('data_extraction.html',
+                        title="Plants Input Page - Bushing Failure Historian",
+                        form=form)
+
         # form input is correct, do the database thing
         else:
             # save the bushing serial number
-            testbushingSerial = form1.bushingSerial.data
+            testbushingSerial = form.bushingSerial.data
 
             # grab data
             lookup = models.Bushing.query.filter_by(bushingSerial=testbushingSerial).first()
             if lookup == None:
                 # Bushing isn't in the database, throw an error.
-                return render_template('plants.html',
+                return render_template('data_extraction.html',
                         title="Plants Input Page - Bushing Failure Historian",
-                        form=form1, noBushing=True)
+                        form=form, noBushing=True)
             else:
                 # Bushing is in the database, get them the information
-                if request.form['singleButton'] == 'Download CSV':
+                if request.form['submit'] == 'Download CSV':
                     # They clicked download csv
                     bushingSerials = []
                     bushingSerials.append(testbushingSerial)
                     writeCSV(bushingSerials)
                     with open('download.csv') as csvfile:
                         data = csv.reader(csvfile, delimiter=',')
-                        return make_response(data,
-                            mimetype="text/csv",
-                            headers={"Content-disposition":
-                                    "attachment; filename=download.csv"})
-
+                        response = make_response(data)
+                        response.headers["Content-disposition"] = \
+                                    "attachment; filename=download.csv"
+                        return response
 
                 # else:
                 #     # They clicked display in browser
                 #     return render_template('display.html',
                 #         title="Plants Input Page - Bushing Failure Historian"
                 #         data=data)
-
+    elif request.method == 'GET':
+        return render_template("/data_extraction.html",
+                        title="Plants Input Page - Bushing Failure Historian",
+                        form=form)
 
 @app.route("/display.html")
 def display(data):

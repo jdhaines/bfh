@@ -8,7 +8,7 @@ class bushingInfo(Form):
     # Bushing Information Section
     bushingSerial = StringField(u'Bushing S/N',
         validators=[DataRequired('Please enter a serial number (ex. BD012345)')])
-    submit = SubmitField("Lookup")
+    # submit = SubmitField("Lookup")
     bushingModel = SelectField(u'Bushing Model',
         # validators=[DataRequired('Please select a bushing model from the drop-down box')],
         choices=[
@@ -117,12 +117,14 @@ class bushingInfo(Form):
 
 class bushingSN(Form):
     bushingSerial = StringField(u'Bushing S/N',
-        validators=[DataRequired('Please enter a serial number (ex. BD012345)')])
+      validators=[DataRequired('Please enter a serial number (ex. BD012345)')])
     submit = SubmitField("Lookup")
 
 
 class singleExtract(Form):
-    bushingSerial = StringField(u'Bushing S/N')
-    displaySingle = SubmitField("Display in Browser")
+    bushingSerial = StringField(u'Bushing S/N',
+      validators=[DataRequired('Please enter a serial number (ex. BD012345)')])
+    submit = SubmitField(u'Download CSV')
+    # submit2 = SubmitField(u'Display in Browser')
 
 # end
