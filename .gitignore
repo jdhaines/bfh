@@ -17,7 +17,7 @@ eggs/
 .eggs/
 lib/
 Lib
-bushingfail
+bushingfail/
 lib64/
 parts/
 sdist/
