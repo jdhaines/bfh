@@ -18,7 +18,7 @@ def index():
 def get_sn():
     form = bushingSN()
     form2 = bushingInfo()
-    iff request.method =='POST':
+    if request.method =='POST':
         # form input isn't correct
         if form.validate() == False:
 
@@ -124,52 +124,4 @@ def documentation():
     return render_template("documentation.html",
                            title="Documentation - Bushing Failure Historian")
 
-
-# data extraction page
-@app.route("/data_extraction", methods=['GET', 'POST'])
-def data_extraction():
-    form = extract()
-    return render_template("data-extraction.html",
-                           title="Data Extraction - Bushing Failure Historian",
-                           form=form)
-    if request.method =='POST':
-        # form input isn't correct
-        if form.validate() == False:
-
-            # Re-show the get_sn page
-            return render_template("data-extraction.html",
-                           title="Data Extraction - Bushing Failure Historian",
-                           form=form)
-        # form input is correct, do the database thing
-        else:
-            # save the bushing serial number
-            testbushingSerial = form.bushingSerial.data
-
-            # grab data
-            lookup = models.Bushing.query.filter_by(bushingSerial=testbushingSerial).first()
-            if lookup == None:
-                # Bushing isn't in the database, throw an error.
-                return render_template('plants.html',
-                        title="Plants Input Page - Bushing Failure Historian",
-                        form=form, noBushing=True)
-            else:
-                # Bushing is in the database, get them the information
-                if request.form['singleButton'] == 'Download CSV':
-                    # They clicked download csv
-                    si = StringIO()
-                    cw = writer(si)
-                    cw.writerows(lookup)
-                    output = make_response(si.getvalue())
-                    output.headers["Content-Disposition"] = "attachment; filename=export.csv"
-                    output.headers["Content-type"] = "text/csv"
-                    return output
-
-                    # return render_template('plants.html',
-                    #     title="Plants Input Page - Bushing Failure Historian",
-                    #     form=form, noBushing=True)
-                else:
-                    return render_template('plants.html',
-                        title="Plants Input Page - Bushing Failure Historian",
-                        form=form, noBushing=True)
-                    # They clicked display in browser
 # end
