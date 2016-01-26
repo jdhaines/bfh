@@ -62,7 +62,7 @@ def writeCSV(bushingSerials):
 def csvtojson(fieldnames):
     csvfile = open('test.csv', 'r')
     jsonfile = open('file.json', 'w')
-
+    print(fieldnames)
     reader = csv.DictReader(csvfile, fieldnames)
     for row in reader:
         json.dump(row, jsonfile)
@@ -135,5 +135,5 @@ def prettyPrintCSV(bushingSerials):
     #         print(data.read())
 
 colnames = writeCSV(['BD017950', 'BD017525', 'asdf'])
-csvtoxml()
+csvtojson(colnames)
 # end

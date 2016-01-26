@@ -12,7 +12,7 @@
     {% endif %}
 	<h1>Data Extraction Tool</h1><br />
 	<h3>Data from a Single Bushing:</h3>
-	<form action="{{ url_for('data_extraction')}}" method="POST" name="extract">
+	<form action="{{ url_for('data_extraction')}}" method="POST" name="singleExtract">
         {{ form.hidden_tag() }}
         <p>Enter the Bushing Serial Number: {{ form.bushingSerial(size=18) }}</p>
         <input type="submit" name="singleButton" value="Download CSV">

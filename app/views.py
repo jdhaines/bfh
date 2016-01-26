@@ -1,7 +1,7 @@
 from flask import render_template, request, flash, make_response
 from app import app, db, models
-from .forms import bushingInfo, bushingSN, extract
-from io import StringIO
+from .forms import bushingInfo, bushingSN, singleExtract
+import csv
 # from csv import writer
 
 
@@ -128,22 +128,22 @@ def documentation():
 # data extraction page
 @app.route("/data_extraction", methods=['GET', 'POST'])
 def data_extraction():
-    form = extract()
+    form1 = singleExtract()
     return render_template("data-extraction.html",
                            title="Data Extraction - Bushing Failure Historian",
-                           form=form)
+                           form=form1)
     if request.method =='POST':
         # form input isn't correct
-        if form.validate() == False:
+        if form1.validate() == False:
 
             # Re-show the get_sn page
             return render_template("data-extraction.html",
                            title="Data Extraction - Bushing Failure Historian",
-                           form=form)
+                           form=form1)
         # form input is correct, do the database thing
         else:
             # save the bushing serial number
-            testbushingSerial = form.bushingSerial.data
+            testbushingSerial = form1.bushingSerial.data
 
             # grab data
             lookup = models.Bushing.query.filter_by(bushingSerial=testbushingSerial).first()
@@ -151,18 +151,27 @@ def data_extraction():
                 # Bushing isn't in the database, throw an error.
                 return render_template('plants.html',
                         title="Plants Input Page - Bushing Failure Historian",
-                        form=form, noBushing=True)
-            # else:
-            #     # Bushing is in the database, get them the information
-            #     if request.form['singleButton'] == 'Download CSV':
-            #         # They clicked download csv
-                    
+                        form=form1, noBushing=True)
+            else:
+                # Bushing is in the database, get them the information
+                if request.form['singleButton'] == 'Download CSV':
+                    # They clicked download csv
+                    bushingSerials = []
+                    bushingSerials.append(testbushingSerial)
+                    writeCSV(bushingSerials)
+                    with open('download.csv') as csvfile:
+                        data = csv.reader(csvfile, delimiter=',')
+                        return make_response(data,
+                            mimetype="text/csv",
+                            headers={"Content-disposition":
+                                    "attachment; filename=download.csv"})
 
-            #     else:
-            #         # They clicked display in browser
-            #         return render_template('display.html',
-            #             title="Plants Input Page - Bushing Failure Historian"
-            #               data=data)
+
+                # else:
+                #     # They clicked display in browser
+                #     return render_template('display.html',
+                #         title="Plants Input Page - Bushing Failure Historian"
+                #         data=data)
 
 
 @app.route("/display.html")
@@ -178,11 +187,31 @@ def writeCSV(bushingSerials):
     and get a python dictionary that can be written to a file or displayed.
     """
 
-    # get column names
+    # get column names from db
     fieldnames = [m.key for m in models.Bushing.__table__.columns]
 
-    with open('test.csv', 'w') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames,
+    # get column names directly
+    column_hash = {
+        'id': 'ID',
+        'bushingSerial': 'Serial',
+        'bushingModel': 'Model',
+        'bushingPlant': 'Plant',
+        'bushingFurnace': 'Furnace',
+        'installationComments': 'Install Comments',
+        'startupComments': 'StartUp Comments',
+        'reason1': 'Failure Reason 1',
+        'reason1Comments': 'Comments1',
+        'reason2': 'Failure Reason 2',
+        'reason2Comments': 'Comments2'
+    }
+
+    # get column names in order
+    colnames = []
+    for f in fieldnames:
+        colnames.append(column_hash[f])
+
+    with open('download.csv', 'w') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=colnames,
                                 lineterminator='\n')
         writer.writeheader()
         for b in bushingSerials:
@@ -195,28 +224,17 @@ def writeCSV(bushingSerials):
             # remove the extra sqlalchemy key/value
             del bushingDict['_sa_instance_state']
 
+            # fix column names
+            for d in bushingDict:
+                if d in column_hash.keys():
+                    bushingDict[column_hash[d]] = bushingDict.pop(d)
+
             # write the row to the csvfile
             writer.writerow(bushingDict)
 
     csvfile.close()
+    # return colnames
 
+# def gatherCSV(bushingSerials):
 
-def gatherCSV(bushingSerials):
-    """
-    Take in a list of bushing serial numbers.  Use that number to query the
-    database and get a python dictionary. Return a single variable with an
-    array of strings to be displayed.
-    """
-
-    # get column names
-    fieldnames = [m.key for m in models.Bushing.__table__.columns]
-    for b in bushingSerials:
-            # load the single bushing db info
-            bushing = models.Bushing.query.filter_by(bushingSerial=b).first()
-
-            # make the bushing dictionary
-            bushingDict = bushing.__dict__
-
-            # remove the extra sqlalchemy key/value
-            del bushingDict['_sa_instance_state']
 # end

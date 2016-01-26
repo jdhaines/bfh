@@ -121,7 +121,7 @@ class bushingSN(Form):
     submit = SubmitField("Lookup")
 
 
-class extract(Form):
+class singleExtract(Form):
     bushingSerial = StringField(u'Bushing S/N')
     displaySingle = SubmitField("Display in Browser")
 
