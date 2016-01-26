@@ -1,0 +1,15 @@
+{% extends "wrapper.html" %}
+{% block content %}
+<!-- main div is started here -->
+{% if data %}
+    {{ data }}
+{% else %}
+    <div class="alert-box error">
+        <p>No data was sent to the page.  There is likely a problem.  Please send a message using the contact link at the bottom of the page.</p>
+    </div>
+    <form action="/" method="GET">
+        <p><input class="home_button" type="submit" value="Home" name="Home"></p>
+    </form>
+{% endif %}
+<!-- main div is ended here -->
+{% endblock %}
