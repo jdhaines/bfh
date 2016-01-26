@@ -22,18 +22,18 @@
         </div>
 
     {% else %}
-    {% for message in form.bushingSerial.errors %}
-        <div class="alert-box error">{{ message }}</div>
-    {% endfor %}
-    {% for message in form.bushingModel.errors %}
-        <div class="alert-box error">{{ message }}</div>
-    {% endfor %}
-    {% for message in form.bushingPlant.errors %}
-        <div class="alert-box error">{{ message }}</div>
-    {% endfor %}
-    {% for message in form.bushingFurnace.errors %}
-        <div class="alert-box error">{{ message }}</div>
-    {% endfor %}
+        {% for message in form.bushingSerial.errors %}
+            <div class="alert-box error">{{ message }}</div>
+        {% endfor %}
+        {% for message in form.bushingModel.errors %}
+            <div class="alert-box error">{{ message }}</div>
+        {% endfor %}
+        {% for message in form.bushingPlant.errors %}
+            <div class="alert-box error">{{ message }}</div>
+        {% endfor %}
+        {% for message in form.bushingFurnace.errors %}
+            <div class="alert-box error">{{ message }}</div>
+        {% endfor %}
     <!-- <h1>Forming Room Information</h1> -->
     <form action="{{ url_for('plants')}}" method="POST" name="bushingInfo">
         {{ form.hidden_tag() }}

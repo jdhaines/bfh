@@ -126,49 +126,50 @@ def documentation():
 
 
 # data extraction page
-# @app.route("/data_extraction", methods=['GET', 'POST'])
-# def data_extraction():
-#     form = extract()
-#     return render_template("data-extraction.html",
-#                            title="Data Extraction - Bushing Failure Historian",
-#                            form=form)
-#     if request.method =='POST':
-#         # form input isn't correct
-#         if form.validate() == False:
+@app.route("/data_extraction", methods=['GET', 'POST'])
+def data_extraction():
+    form = extract()
+    return render_template("data-extraction.html",
+                           title="Data Extraction - Bushing Failure Historian",
+                           form=form)
+    if request.method =='POST':
+        # form input isn't correct
+        if form.validate() == False:
 
-#             # Re-show the get_sn page
-#             return render_template("data-extraction.html",
-#                            title="Data Extraction - Bushing Failure Historian",
-#                            form=form)
-#         # form input is correct, do the database thing
-#         else:
-#             # save the bushing serial number
-#             testbushingSerial = form.bushingSerial.data
+            # Re-show the get_sn page
+            return render_template("data-extraction.html",
+                           title="Data Extraction - Bushing Failure Historian",
+                           form=form)
+        # form input is correct, do the database thing
+        else:
+            # save the bushing serial number
+            testbushingSerial = form.bushingSerial.data
 
-#             # grab data
-#             lookup = models.Bushing.query.filter_by(bushingSerial=testbushingSerial).first()
-#             if lookup == None:
-#                 # Bushing isn't in the database, throw an error.
-#                 return render_template('plants.html',
-#                         title="Plants Input Page - Bushing Failure Historian",
-#                         form=form, noBushing=True)
-#             else:
-#                 # Bushing is in the database, get them the information
-#                 if request.form['singleButton'] == 'Download CSV':
-#                     # They clicked download csv
-#                     si = StringIO()
-#                     cw = writer(si)
-#                     cw.writerows(lookup)
-#                     output = make_response(si.getvalue())
-#                     output.headers["Content-Disposition"] f= "attachment; filename=export.csv"
-#                     output.headers["Content-type"] = "text/csv"
-#                     return output
+            # grab data
+            lookup = models.Bushing.query.filter_by(bushingSerial=testbushingSerial).first()
+            if lookup == None:
+                # Bushing isn't in the database, throw an error.
+                return render_template('plants.html',
+                        title="Plants Input Page - Bushing Failure Historian",
+                        form=form, noBushing=True)
+            # else:
+            #     # Bushing is in the database, get them the information
+            #     if request.form['singleButton'] == 'Download CSV':
+            #         # They clicked download csv
+                    
 
-#                 else:
-#                     # They clicked display in browser
-#                     return render_template('plants.html',
-#                         title="Plants Input Page - Bushing Failure Historian",
-#                         form=form, noBushing=True)
+            #     else:
+            #         # They clicked display in browser
+            #         return render_template('display.html',
+            #             title="Plants Input Page - Bushing Failure Historian"
+            #               data=data)
+
+
+@app.route("/display.html")
+def display(data):
+    return render_template('display.html',
+                           title="Data Display - Bushing Failure Historian",
+                           data=data)
 
 
 def writeCSV(bushingSerials):
@@ -195,7 +196,27 @@ def writeCSV(bushingSerials):
             del bushingDict['_sa_instance_state']
 
             # write the row to the csvfile
-            writer.writerow(bushing.__dict__)
+            writer.writerow(bushingDict)
+
     csvfile.close()
 
+
+def gatherCSV(bushingSerials):
+    """
+    Take in a list of bushing serial numbers.  Use that number to query the
+    database and get a python dictionary. Return a single variable with an
+    array of strings to be displayed.
+    """
+
+    # get column names
+    fieldnames = [m.key for m in models.Bushing.__table__.columns]
+    for b in bushingSerials:
+            # load the single bushing db info
+            bushing = models.Bushing.query.filter_by(bushingSerial=b).first()
+
+            # make the bushing dictionary
+            bushingDict = bushing.__dict__
+
+            # remove the extra sqlalchemy key/value
+            del bushingDict['_sa_instance_state']
 # end
