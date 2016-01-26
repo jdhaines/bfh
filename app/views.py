@@ -152,24 +152,24 @@ def data_extraction():
                 return render_template('plants.html',
                         title="Plants Input Page - Bushing Failure Historian",
                         form=form, noBushing=True)
-            else:
-                # Bushing is in the database, get them the information
-                if request.form['singleButton'] == 'Download CSV':
-                    # They clicked download csv
-                    si = StringIO()
-                    cw = writer(si)
-                    cw.writerows(lookup)
-                    output = make_response(si.getvalue())
-                    output.headers["Content-Disposition"] = "attachment; filename=export.csv"
-                    output.headers["Content-type"] = "text/csv"
-                    return output
+            # else:
+            #     # Bushing is in the database, get them the information
+            #     if request.form['singleButton'] == 'Download CSV':
+            #         # They clicked download csv
+            #         si = StringIO()
+            #         cw = writer(si)
+            #         cw.writerows(lookup)
+            #         output = make_response(si.getvalue())
+            #         output.headers["Content-Disposition"] = "attachment; filename=export.csv"
+            #         output.headers["Content-type"] = "text/csv"
+            #         return output
 
-                    # return render_template('plants.html',
-                    #     title="Plants Input Page - Bushing Failure Historian",
-                    #     form=form, noBushing=True)
-                else:
-                    return render_template('plants.html',
-                        title="Plants Input Page - Bushing Failure Historian",
-                        form=form, noBushing=True)
-                    # They clicked display in browser
+            #         # return render_template('plants.html',
+            #         #     title="Plants Input Page - Bushing Failure Historian",
+            #         #     form=form, noBushing=True)
+            #     else:
+            #         return render_template('plants.html',
+            #             title="Plants Input Page - Bushing Failure Historian",
+            #             form=form, noBushing=True)
+            #         # They clicked display in browser
 # end
