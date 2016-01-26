@@ -16,6 +16,8 @@ downloads/
 eggs/
 .eggs/
 lib/
+Lib/
+bushingfail/
 lib64/
 parts/
 sdist/
