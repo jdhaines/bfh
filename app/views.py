@@ -136,7 +136,8 @@ def data_extraction():
 
     if request.method == 'POST':
         # top buttons chosen (single bushing)
-        if request.form['submit'] == 'Download CSV' or request.form['submit'] == 'Display in Browser':
+        if (request.form['submit'] == 'Download CSV' or
+                request.form['submit'] == 'Display in Browser'):
             # form entry isn't correct
             if form.validate() is False:
                 # Re-show the plants page
@@ -195,7 +196,7 @@ def data_extraction():
                         return render_template('display.html',
                                                title="Results Display - Bushin"
                                                "gFailure Historian", form=form,
-                                               data=Markup(html_data))  
+                                               data=Markup(html_data))
         # bottom buttons chosen (all bushings)
         else:
             # They clicked download all bushings in a csv
@@ -334,7 +335,8 @@ def csvtohtml(memory_file):
             htmlfile.write('<tr class="first_row">')  # write <tr> tag
             colnum = 0
             for column in row:
-                htmlfile.write('<th class=col_' + str(colnum) + '>' + column + '</th>')
+                htmlfile.write('<th class=col_' + str(colnum) + '>' + column +
+                               '</th>')
                 colnum += 1
             htmlfile.write('</tr>')
 
@@ -343,7 +345,8 @@ def csvtohtml(memory_file):
             htmlfile.write('<tr class="odd_row">')
             colnum = 0
             for column in row:
-                htmlfile.write('<td class=col_' + str(colnum) + '>' + column + '</td>')
+                htmlfile.write('<td class=col_' + str(colnum) + '>' + column +
+                               '</td>')
                 colnum += 1
             htmlfile.write('</tr>')
 
@@ -351,7 +354,8 @@ def csvtohtml(memory_file):
             htmlfile.write('<tr class="even_row">')
             colnum = 0
             for column in row:
-                htmlfile.write('<td class=col_' + str(colnum) + '>' + column + '</td>')
+                htmlfile.write('<td class=col_' + str(colnum) + '>' + column +
+                               '</td>')
                 colnum += 1
             htmlfile.write('</tr>')
 
