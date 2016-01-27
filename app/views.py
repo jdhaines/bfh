@@ -135,71 +135,109 @@ def data_extraction():
     form = singleExtract()
 
     if request.method == 'POST':
-
-        # form entry isn't correct
-        if form.validate() is False:
-
-            # Re-show the plants page
-            return render_template('data_extraction.html', title="Plants Input"
-                                   " Page - Bushing Failure Historian",
-                                   form=form)
-
-        # form input is correct, do the database thing
-        else:
-            # save the bushing serial number
-            test_bushing_serial = form.bushingSerial.data
-
-            # grab data
-            lookup = models.Bushing.query.filter_by(
-                bushingSerial=test_bushing_serial).first()
-            if lookup is None:
-                # Bushing isn't in the database, throw an error.
+        # top buttons chosen (single bushing)
+        if request.form['submit'] == 'Download CSV' or request.form['submit'] == 'Display in Browser':
+            # form entry isn't correct
+            if form.validate() is False:
+                # Re-show the plants page
                 return render_template('data_extraction.html', title="Plants I"
                                        "nput Page - Bushing Failure Historian",
-                                       form=form, noBushing=True)
+                                       form=form)
+            # form input is correct, do the database thing
             else:
+                # save the bushing serial number
+                test_bushing_serial = form.bushingSerial.data
+                # grab data
+                lookup = models.Bushing.query.filter_by(
+                    bushingSerial=test_bushing_serial).first()
+
+                # Bushing isn't in the database, throw an error.
+                if lookup is None:
+                    return render_template('data_extraction.html', title="Plan"
+                                           "ts Input Page - Bushing Failure Hi"
+                                           "storian", form=form,
+                                           noBushing=True)
+
                 # Bushing is in the database, get them the information
-
-                if request.form['submit'] == 'Download CSV':
-                    # They clicked download csv
-
-                    # grab the bushingSN they put in the form and
-                    # send it to writecsvio which will return a
-                    # stringIO object with the contents of the csv
-                    # file written to it.
-                    bushing_serials = []
-                    bushing_serials.append(test_bushing_serial)
-                    csv_data = writecsvio(bushing_serials)
-
-                    # make the repsponse, prepare the file, and send
-                    # for download
-                    output = make_response(csv_data.getvalue())
-                    output.headers["Content-Disposition"] = \
-                        "attachment; filename=download.csv"
-                    output.headers["Content-type"] = "text/csv"
-                    return output
-
-                elif request.form['submit'] == 'Display in Browser':
-                    # They clicked display in browser
-
-                    # start just like option above
-                    bushing_serials = []
-                    bushing_serials.append(test_bushing_serial)
-                    csv_data = writecsvio(bushing_serials)
-
-                    # send csv_data to csvtohtml function and get back html
-                    html_stringio = csvtohtml(csv_data)
-                    html_data = html_stringio.getvalue()
-                    # return html_data.getvalue()
-                    return render_template('display.html',
-                                           title="Results Display - Bushing "
-                                           "Failure Historian", form=form,
-                                           data=Markup(html_data))
-
+                # and process button presses)
                 else:
-                    return "You shouldn't see this page.  "
-                    "Something is wrong..."
+                    # They clicked download single csv
+                    if request.form['submit'] == 'Download CSV':
 
+                        # grab the bushingSN they put in the form and
+                        # send it to writecsvio which will return a
+                        # stringIO object with the contents of the csv
+                        # file written to it.
+                        bushing_serials = []
+                        bushing_serials.append(test_bushing_serial)
+                        csv_data = writecsvio(bushing_serials)
+
+                        # make the response, prepare the file, and send
+                        # for download
+                        output = make_response(csv_data.getvalue())
+                        output.headers["Content-Disposition"] = \
+                            "attachment; filename=download.csv"
+                        output.headers["Content-type"] = "text/csv"
+                        return output
+
+                    # They clicked display single bushing in browser
+                    else:  # request.form['submit'] == 'Display in Browser':
+
+                        # start just like option above
+                        bushing_serials = []
+                        bushing_serials.append(test_bushing_serial)
+                        csv_data = writecsvio(bushing_serials)
+
+                        # send csv_data to csvtohtml function and get back html
+                        html_stringio = csvtohtml(csv_data)
+                        html_data = html_stringio.getvalue()
+
+                        return render_template('display.html',
+                                               title="Results Display - Bushin"
+                                               "gFailure Historian", form=form,
+                                               data=Markup(html_data))  
+        # bottom buttons chosen (all bushings)
+        else:
+            # They clicked download all bushings in a csv
+            if request.form['submit'] == 'CSV':
+
+                # Grab all the bushings from the database and
+                # send it to writecsvio which will return a
+                # stringIO object with the contents of the csv
+                # file written to it.
+                bushing_serials = []
+                bushing_list = models.Bushing.query.all()
+                for b in bushing_list:
+                    bushing_serials.append(b.bushingSerial)
+                csv_data = writecsvio(bushing_serials)
+
+                # make the response, prepare the file, and send
+                # for download
+                output = make_response(csv_data.getvalue())
+                output.headers["Content-Disposition"] = \
+                    "attachment; filename=download.csv"
+                output.headers["Content-type"] = "text/csv"
+                return output
+
+            # They clicked display all bushings in a csv
+            else:  # request.form['submit'] == 'Display All':
+
+                # start just like option above
+                bushing_serials = []
+                bushing_list = models.Bushing.query.all()
+                for b in bushing_list:
+                    bushing_serials.append(b.bushingSerial)
+                csv_data = writecsvio(bushing_serials)
+
+                # send csv_data to csvtohtml function and get back html
+                html_stringio = csvtohtml(csv_data)
+                html_data = html_stringio.getvalue()
+
+                return render_template('display.html',
+                                       title="Results Display - Bushing "
+                                       "Failure Historian", form=form,
+                                       data=Markup(html_data))
+    # request method is GET
     elif request.method == 'GET':
         return render_template('data_extraction.html', title="Plants Input"
                                " Page - Bushing Failure Historian",
@@ -211,61 +249,6 @@ def display(data):
     return render_template('display.html',
                            title="Data Display - Bushing Failure Historian",
                            data=data)
-
-
-def writecsv(bushing_serials):
-    """
-    Take in a list of bushing serial numbers.  Use that number to query the
-    database and get a python dictionary that can be written to a file or
-    displayed.  Output is an actual csv file.
-    """
-
-    # get column names from db
-    fieldnames = [m.key for m in models.Bushing.__table__.columns]
-
-    # get column names directly
-    column_hash = {
-        'id': 'ID',
-        'bushingSerial': 'Serial',
-        'bushingModel': 'Model',
-        'bushingPlant': 'Plant',
-        'bushingFurnace': 'Furnace',
-        'installationComments': 'Install Comments',
-        'startupComments': 'StartUp Comments',
-        'reason1': 'Failure Reason 1',
-        'reason1Comments': 'Comments1',
-        'reason2': 'Failure Reason 2',
-        'reason2Comments': 'Comments2'
-    }
-
-    # get column names in order
-    colnames = []
-    for f in fieldnames:
-        colnames.append(column_hash[f])
-
-    with open('download.csv', 'w') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=colnames)
-        writer.writeheader()
-        for b in bushing_serials:
-            # load the single bushing db info
-            bushing = models.Bushing.query.filter_by(bushingSerial=b).first()
-
-            # make the bushing dictionary
-            bushing_dict = bushing.__dict__
-
-            # remove the extra sqlalchemy key/value
-            del bushing_dict['_sa_instance_state']
-
-            # fix column names
-            for d in bushing_dict:
-                if d in column_hash.keys():
-                    bushing_dict[column_hash[d]] = bushing_dict.pop(d)
-
-            # write the row to the csvfile
-            writer.writerow(bushing_dict)
-
-    csvfile.close()
-    # return colnames
 
 
 def writecsvio(bushing_serials):

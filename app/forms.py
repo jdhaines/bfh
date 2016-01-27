@@ -123,9 +123,7 @@ class bushingSN(Form):
 
 class singleExtract(Form):
     bushingSerial = StringField(u'Bushing S/N',
-                                validators=[DataRequired('Please enter a seria'
-                                                         'l number (ex. BD0123'
-                                                         '45)')])
+      validators=[DataRequired('Please enter a serial number (ex. BD012345)')])
     submit = SubmitField(u'Button')
 
 # end
