@@ -200,9 +200,11 @@ table {
 	margin-top: 80px;
 	margin-bottom: 80px;
 	table-layout: fixed;
+	white-space: normal;
 }
 table td {
 	border: 1px solid black;
+	word-wrap: break-word;
 }
 .first_row {
 	font-weight: bold;
@@ -210,3 +212,37 @@ table td {
 .odd_row {
 	background-color: #d6d6d6;
 }
+.col_0 {
+	width: 2%;
+}
+.col_1 {
+	width: 5%;
+}
+.col_2 {
+	width: 5%;
+}
+.col_3 {
+	width: 6%;
+}
+.col_4 {
+	width: 6%;
+}
+.col_5 {
+	width: 16%;
+}
+.col_6 {
+	width: 16%;
+}
+.col_7 {
+	width: 5%;
+}
+.col_8 {
+	width: 16%;
+}
+.col_9 {
+	width: 5%;
+}
+.col_10 {
+	width: 16%;
+}
+

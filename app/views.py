@@ -336,8 +336,9 @@ def csvtohtml(memory_file):
     # Create the HTML file for output
     htmlfile = StringIO()
 
-    # initialize rownum variable
+    # initialize rownum & colnum variable
     rownum = 0
+    colnum = 0
 
     # write <table> tag
     htmlfile.write('<table>')
@@ -348,21 +349,27 @@ def csvtohtml(memory_file):
         # write header row. assumes first row in csv contains header
         if rownum == 0:
             htmlfile.write('<tr class="first_row">')  # write <tr> tag
+            colnum = 0
             for column in row:
-                htmlfile.write('<th>' + column + '</th>')
+                htmlfile.write('<th class=col_' + str(colnum) + '>' + column + '</th>')
+                colnum += 1
             htmlfile.write('</tr>')
 
         #  write all other rows
         elif rownum % 2 == 1:
             htmlfile.write('<tr class="odd_row">')
+            colnum = 0
             for column in row:
-                htmlfile.write('<td>' + column + '</td>')
+                htmlfile.write('<td class=col_' + str(colnum) + '>' + column + '</td>')
+                colnum += 1
             htmlfile.write('</tr>')
 
         else:
             htmlfile.write('<tr class="even_row">')
+            colnum = 0
             for column in row:
-                htmlfile.write('<td>' + column + '</td>')
+                htmlfile.write('<td class=col_' + str(colnum) + '>' + column + '</td>')
+                colnum += 1
             htmlfile.write('</tr>')
 
         # increment row count
