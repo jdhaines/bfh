@@ -1,0 +1,38 @@
+{% extends "wrapper.html" %}
+{% block content %}
+<!-- main div is started here -->
+<div class="form_wrapper">
+	{% if message %}
+    <div class="alert-box success">
+    <p>testy test test</p>
+    </div>
+	{% endif %}
+	{% for message in form.bushingSerial.errors %}
+        <div class="alert-box error">{{ message }}</div>
+    {% endfor %}
+    {% if noBushing %}
+    <div class="alert-box error">
+    <p>Your bushing was not found in the database.  Please try again.</p>
+    </div>
+    {% endif %}
+	<h1>Data Extraction Tool</h1><br />
+	
+	<form action="{{ url_for('data_extraction')}}" method="POST" name="singleExtract">
+        <h3>Data from a Single Bushing:</h3>
+        {{ form.hidden_tag() }}
+        <p>Enter the Bushing Serial Number: {{ form.bushingSerial(size=18) }}</p>
+        <p>
+	        <input type="submit" name="submit" value="Download CSV">&nbsp;&nbsp;&nbsp;
+			<input type="submit" name="submit" value="Display in Browser">
+		</p>
+        <hr class="style-one" />
+        <h3>Data from All Bushings:</h3>
+        <p>
+            <input type="submit" name="submit" value="CSV">&nbsp;&nbsp;&nbsp;
+            <input type="submit" name="submit" value="Display">
+        </p>
+
+    </form>
+</div> <!-- end form_wrapper -->
+<!-- main div is ended here -->
+{% endblock %}
