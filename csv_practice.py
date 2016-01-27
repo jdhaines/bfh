@@ -4,7 +4,7 @@ from io import StringIO
 import json
 
 
-def writeCSV(bushingSerials):
+def writecsv_practice(bushing_serials):
     """
     Take in a list of bushing serial numbers.  Use that number to query the database
     and get a python dictionary that can be written to a file or displayed.
@@ -37,23 +37,23 @@ def writeCSV(bushingSerials):
         writer = csv.DictWriter(csvfile, fieldnames=colnames,
                                 lineterminator='\n')
         writer.writeheader()
-        for b in bushingSerials:
+        for b in bushing_serials:
             # load the single bushing db info
             bushing = models.Bushing.query.filter_by(bushingSerial=b).first()
 
             # make the bushing dictionary
-            bushingDict = bushing.__dict__
+            bushing_dict = bushing.__dict__
 
             # remove the extra sqlalchemy key/value
-            del bushingDict['_sa_instance_state']
+            del bushing_dict['_sa_instance_state']
 
             # fix column names
-            for d in bushingDict:
+            for d in bushing_dict:
                 if d in column_hash.keys():
-                    bushingDict[column_hash[d]] = bushingDict.pop(d)
+                    bushing_dict[column_hash[d]] = bushing_dict.pop(d)
 
             # write the row to the csvfile
-            writer.writerow(bushingDict)
+            writer.writerow(bushing_dict)
 
     csvfile.close()
     return colnames
@@ -102,38 +102,137 @@ def csvtoxml():
     xmlData.close()
 
 
-def prettyPrintCSV(bushingSerials):
+def pretty_print_csv(bushing_serials):
     return True
 
-# def gatherCSV(bushingSerials):
-    # """
-    # Take in a list of bushing serial numbers.  Use that number to query the
-    # database and get a python dictionary. Return a single variable with an
-    # array of strings to be displayed.
-    # """
 
-    # # get column names
-    # fieldnames = [m.key for m in models.Bushing.__table__.columns]
-
-    # # add fieldnames as the first string in the array
-    # data = StringIO()
-    # writer = csv.DictWriter(data, fieldnames=fieldnames,
-    #                         lineterminator='\n')
-    # writer.writeheader()
-    # for b in bushingSerials:
+# def gatherCSV(bushing_serials):hing_serials:
     #         # load the single bushing db info
     #         bushing = models.Bushing.query.filter_by(bushingSerial=b).first()
 
     #         # make the bushing dictionary
-    #         bushingDict = bushing.__dict__
+    #         bushing_dict = bushing.__dict__
 
     #         # remove the extra sqlalchemy key/value
-    #         del bushingDict['_sa_instance_state']
+    #         del bushing_dict['_sa_instance_state']
 
     #         # append next row in the array
-    #         writer.writerow(bushingDict)
+    #         writer.writerow(bushing_dict)
     #         print(data.read())
 
-colnames = writeCSV(['BD017950', 'BD017525', 'asdf'])
-csvtojson(colnames)
+
+def writecsv(bushing_serials):
+    """
+    Take in a list of bushing serial numbers.  Use that number to query the
+    database and get a python dictionary that can be written to a file or
+    displayed.
+    """
+
+    # get column names from db
+    fieldnames = [m.key for m in models.Bushing.__table__.columns]
+
+    # get column names directly
+    column_hash = {
+        'id': 'ID',
+        'bushingSerial': 'Serial',
+        'bushingModel': 'Model',
+        'bushingPlant': 'Plant',
+        'bushingFurnace': 'Furnace',
+        'installationComments': 'Install Comments',
+        'startupComments': 'StartUp Comments',
+        'reason1': 'Failure Reason 1',
+        'reason1Comments': 'Comments1',
+        'reason2': 'Failure Reason 2',
+        'reason2Comments': 'Comments2'
+    }
+
+    # get column names in order
+    colnames = []
+    for f in fieldnames:
+        colnames.append(column_hash[f])
+
+    with open('download.csv', 'w') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=colnames,
+                                lineterminator='\n')
+        writer.writeheader()
+        for b in bushing_serials:
+            # load the single bushing db info
+            bushing = models.Bushing.query.filter_by(bushingSerial=b).first()
+
+            # make the bushing dictionary
+            bushing_dict = bushing.__dict__
+
+            # remove the extra sqlalchemy key/value
+            del bushing_dict['_sa_instance_state']
+
+            # fix column names
+            for d in bushing_dict:
+                if d in column_hash.keys():
+                    bushing_dict[column_hash[d]] = bushing_dict.pop(d)
+
+            # write the row to the csvfile
+            writer.writerow(bushing_dict)
+
+    csvfile.close()
+    # return colnames
+
+
+def writecsvio(bushing_serials):
+    """
+    Take in a list of bushing serial numbers.  Use that number to query the
+    database and get a python dictionary that can be written to a file or
+    displayed.  In this case, save the file to a stringIO object.
+    """
+
+    # get column names from db
+    fieldnames = [m.key for m in models.Bushing.__table__.columns]
+
+    # get column names directly
+    column_hash = {
+        'id': 'ID',
+        'bushingSerial': 'Serial',
+        'bushingModel': 'Model',
+        'bushingPlant': 'Plant',
+        'bushingFurnace': 'Furnace',
+        'installationComments': 'Install Comments',
+        'startupComments': 'StartUp Comments',
+        'reason1': 'Failure Reason 1',
+        'reason1Comments': 'Comments1',
+        'reason2': 'Failure Reason 2',
+        'reason2Comments': 'Comments2'
+    }
+
+    # get column names in order
+    colnames = []
+    for f in fieldnames:
+        colnames.append(column_hash[f])
+
+    csv_data = StringIO()
+    writer = csv.DictWriter(csv_data, fieldnames=colnames)
+    writer.writeheader()
+
+    for b in bushing_serials:
+        # load the single bushing db info
+        bushing = models.Bushing.query.filter_by(bushingSerial=b).first()
+
+        # make the bushing dictionary
+        bushing_dict = bushing.__dict__
+
+        # remove the extra sqlalchemy key/value
+        del bushing_dict['_sa_instance_state']
+
+        # fix column names
+        for d in bushing_dict:
+            if d in column_hash.keys():
+                bushing_dict[column_hash[d]] = bushing_dict.pop(d)
+
+        # write the row to the csvfile
+        writer.writerow(bushing_dict)
+
+    return csv_data
+
+# colnames = writecsv(['BD017950', 'BD017525', 'asdf'])
+csv_data = writecsvio(['asdf'])
+print(csv_data.getvalue())
+# csvtojson(colnames)
 # end

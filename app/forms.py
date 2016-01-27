@@ -112,7 +112,7 @@ class bushingInfo(Form):
     reason2Comments = TextAreaField(u'Secondary Reason Comments')
 
     # Submit Button
-    submit = SubmitField("Submit")
+    submit = SubmitField(u"Submit")
 
 
 class bushingSN(Form):
@@ -123,7 +123,9 @@ class bushingSN(Form):
 
 class singleExtract(Form):
     bushingSerial = StringField(u'Bushing S/N',
-      validators=[DataRequired('Please enter a serial number (ex. BD012345)')])
+                                validators=[DataRequired('Please enter a seria'
+                                                         'l number (ex. BD0123'
+                                                         '45)')])
     submit = SubmitField(u'Download CSV')
     # submit2 = SubmitField(u'Display in Browser')
 
