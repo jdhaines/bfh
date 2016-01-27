@@ -1,4 +1,4 @@
-from flask import render_template, request, make_response  # flash
+from flask import render_template, request, make_response, Markup  # flash
 from app import app, db, models
 from .forms import bushingInfo, bushingSN, singleExtract
 import csv
@@ -159,6 +159,7 @@ def data_extraction():
                                        form=form, noBushing=True)
             else:
                 # Bushing is in the database, get them the information
+
                 if request.form['submit'] == 'Download CSV':
                     # They clicked download csv
 
@@ -178,10 +179,27 @@ def data_extraction():
                     output.headers["Content-type"] = "text/csv"
                     return output
 
-                else:
+                elif request.form['submit'] == 'Display in Browser':
                     # They clicked display in browser
 
+                    # start just like option above
                     bushing_serials = []
+                    bushing_serials.append(test_bushing_serial)
+                    csv_data = writecsvio(bushing_serials)
+
+                    # send csv_data to csvtohtml function and get back html
+                    html_stringio = csvtohtml(csv_data)
+                    html_data = html_stringio.getvalue()
+                    # return html_data.getvalue()
+                    return render_template('display.html',
+                                           title="Results Display - Bushing "
+                                           "Failure Historian", form=form,
+                                           data=Markup(html_data))
+
+                else:
+                    return "You shouldn't see this page.  "
+                    "Something is wrong..."
+
     elif request.method == 'GET':
         return render_template('data_extraction.html', title="Plants Input"
                                " Page - Bushing Failure Historian",
@@ -226,8 +244,7 @@ def writecsv(bushing_serials):
         colnames.append(column_hash[f])
 
     with open('download.csv', 'w') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=colnames,
-                                lineterminator='\n')
+        writer = csv.DictWriter(csvfile, fieldnames=colnames)
         writer.writeheader()
         for b in bushing_serials:
             # load the single bushing db info
@@ -306,17 +323,18 @@ def writecsvio(bushing_serials):
     return csv_data
 
 
-def csvtohtml(csv_data):
+def csvtohtml(memory_file):
     """
     Adapted from a snippet found on http://www.ctroms.com/ written by
     Chris Trombley
     """
 
-    # Open the CSV file for reading
-    reader = csv.reader(open(sys.argv[1]))
+    # Open the CSV file for reading, and make into a reader object
+    memory_file.seek(0)  # who knows why this needs to happen
+    reader = csv.reader(memory_file.readlines(), delimiter=',')
 
     # Create the HTML file for output
-    htmlfile = open(sys.argv[2], "w")
+    htmlfile = StringIO()
 
     # initialize rownum variable
     rownum = 0
@@ -329,14 +347,20 @@ def csvtohtml(csv_data):
 
         # write header row. assumes first row in csv contains header
         if rownum == 0:
-            htmlfile.write('<tr>')  # write <tr> tag
+            htmlfile.write('<tr class="first_row">')  # write <tr> tag
             for column in row:
                 htmlfile.write('<th>' + column + '</th>')
             htmlfile.write('</tr>')
 
         #  write all other rows
+        elif rownum % 2 == 1:
+            htmlfile.write('<tr class="odd_row">')
+            for column in row:
+                htmlfile.write('<td>' + column + '</td>')
+            htmlfile.write('</tr>')
+
         else:
-            htmlfile.write('<tr>')
+            htmlfile.write('<tr class="even_row">')
             for column in row:
                 htmlfile.write('<td>' + column + '</td>')
             htmlfile.write('</tr>')
@@ -347,7 +371,6 @@ def csvtohtml(csv_data):
     # write </table> tag
     htmlfile.write('</table>')
 
-    # print results to shell
-    # print("Created " + str(rownum) + " row table.")
+    return htmlfile
 
 # end

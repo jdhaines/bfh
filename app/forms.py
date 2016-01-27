@@ -126,7 +126,6 @@ class singleExtract(Form):
                                 validators=[DataRequired('Please enter a seria'
                                                          'l number (ex. BD0123'
                                                          '45)')])
-    submit = SubmitField(u'Download CSV')
-    # submit2 = SubmitField(u'Display in Browser')
+    submit = SubmitField(u'Button')
 
 # end

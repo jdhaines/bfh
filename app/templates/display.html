@@ -1,15 +1,42 @@
-{% extends "wrapper.html" %}
-{% block content %}
-<!-- main div is started here -->
-{% if data %}
-    {{ data }}
-{% else %}
-    <div class="alert-box error">
-        <p>No data was sent to the page.  There is likely a problem.  Please send a message using the contact link at the bottom of the page.</p>
-    </div>
-    <form action="/" method="GET">
-        <p><input class="home_button" type="submit" value="Home" name="Home"></p>
-    </form>
-{% endif %}
-<!-- main div is ended here -->
-{% endblock %}
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        {% include 'head_includes.html' %}
+        {% if title %}
+        <title>{{ title }}</title>
+        {% else %}
+        <title>JM Bushing Failure Historian</title>
+        {% endif %}
+    </head>
+    <body class="display">
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <div class="wrapper">
+            <div class="preHeader">
+                {% include 'preheader.html' %}
+            </div> <!-- end preHeader -->
+            <div class="header blue_box">
+                {% include 'header.html' %}
+            </div> <!-- end header -->
+            <div class="main">
+                {% if data %}
+                    <div class="data-wrapper">
+                        {{ data }}
+                    </div>
+                {% else %}
+                    <div class="alert-box error">
+                        <p>No data was sent to the page.  There is likely a problem.  Please send a message using the contact link at the bottom of the page.</p>
+                    </div>
+                    <form action="/" method="GET">
+                    <p><input class="home_button" type="submit" value="Home" name="Home"></p>
+                    </form>
+                {% endif %}
+            </div> <!-- end main -->
+            <div class="footer">
+                {% include 'footer.html' %}
+            </div> <!-- end footer -->
+            {% include 'body_includes.html' %}
+        </div> <!-- end wrapper -->
+    </body>
+</html>

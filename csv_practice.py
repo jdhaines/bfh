@@ -208,7 +208,7 @@ def writecsvio(bushing_serials):
         colnames.append(column_hash[f])
 
     csv_data = StringIO()
-    writer = csv.DictWriter(csv_data, fieldnames=colnames)
+    writer = csv.DictWriter(csv_data, fieldnames=colnames, lineterminator='\n')
     writer.writeheader()
 
     for b in bushing_serials:
@@ -231,8 +231,55 @@ def writecsvio(bushing_serials):
 
     return csv_data
 
-# colnames = writecsv(['BD017950', 'BD017525', 'asdf'])
-csv_data = writecsvio(['asdf'])
-print(csv_data.getvalue())
+
+def csvtohtml(memory_file):
+    """
+    Adapted from a snippet found on http://www.ctroms.com/ written by
+    Chris Trombley
+    """
+
+    # Open the CSV file for reading, and make into a reader object
+    memory_file.seek(0)  # who knows why this needs to happen
+    reader = csv.reader(memory_file.readlines(), delimiter=',')
+
+    # Create the HTML file for output
+    htmlfile = StringIO()
+
+    # initialize rownum variable
+    rownum = 0
+
+    # write <table> tag
+    htmlfile.write('<table>')
+
+    # generate table contents
+    for row in reader:  # Read a single row from the CSV file
+
+        # write header row. assumes first row in csv contains header
+        if rownum == 0:
+            htmlfile.write('<tr>')  # write <tr> tag
+            for column in row:
+                htmlfile.write('<th>' + column + '</th>')
+            htmlfile.write('</tr>')
+
+        #  write all other rows
+        else:
+            htmlfile.write('<tr>')
+            for column in row:
+                htmlfile.write('<td>' + column + '</td>')
+            htmlfile.write('</tr>')
+
+        # increment row count
+        rownum += 1
+
+    # write </table> tag
+    htmlfile.write('</table>')
+
+    return htmlfile
+
+csv_data = writecsvio(['BD017950', 'BD017525', 'asdf'])
+htmlfile = csvtohtml(csv_data)
+# csv_data = writecsvio(['asdf'])
+# print('csv_data', csv_data.getvalue())
+print('htmlfile', htmlfile.getvalue())
 # csvtojson(colnames)
 # end

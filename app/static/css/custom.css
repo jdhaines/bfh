@@ -1,9 +1,11 @@
 /*body styling*/
 body {
 	font-family: 'Roboto', sans-serif;
-	width: 1000px;
 	margin-left: auto;
 	margin-right: auto;
+}
+.standard {
+	width: 1000px;
 }
 a {
 	text-decoration: inherit;
@@ -135,6 +137,9 @@ pre {
 	border: none;
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
+	width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
 }
 .footer ul {
 	padding-left: 0px;
@@ -184,4 +189,24 @@ pre {
 .notice {
     background:#e3f7fc url('../img/notice.png') no-repeat 10px 50%;
     border:1px solid #8ed9f6;
+}
+/*Data Display Page*/
+.display {
+	width: 100%;
+}
+table {
+	width: 100%;
+	text-align: center;
+	margin-top: 80px;
+	margin-bottom: 80px;
+	table-layout: fixed;
+}
+table td {
+	border: 1px solid black;
+}
+.first_row {
+	font-weight: bold;
+}
+.odd_row {
+	background-color: #d6d6d6;
 }
