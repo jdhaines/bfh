@@ -161,32 +161,27 @@ def data_extraction():
                 # Bushing is in the database, get them the information
                 if request.form['submit'] == 'Download CSV':
                     # They clicked download csv
+
+                    # grab the bushingSN they put in the form and
+                    # send it to writecsvio which will return a
+                    # stringIO object with the contents of the csv
+                    # file written to it.
                     bushing_serials = []
                     bushing_serials.append(test_bushing_serial)
                     csv_data = writecsvio(bushing_serials)
+
+                    # make the repsponse, prepare the file, and send
+                    # for download
                     output = make_response(csv_data.getvalue())
                     output.headers["Content-Disposition"] = \
                         "attachment; filename=download.csv"
                     output.headers["Content-type"] = "text/csv"
                     return output
-                # if request.form['submit'] == 'Download CSV':
-                #     # They clicked download csv
-                #     bushing_serials = []
-                #     bushing_serials.append(test_bushing_serial)
-                #     writecsv(bushing_serials)
-                #     with open('download.csv') as csvfile:
-                #         data = csv.reader(csvfile, delimiter=',')
-                #         response = make_response(data)
-                #       response.headers["Content-disposition"] = "attachment;"
-                #         " filename=Download.csv"
-                #         return response
 
                 else:
-                    return "test else"
-                #     # They clicked display in browser
-                #     return render_template('display.html',
-                #         title="Plants Input Page - Bushing Failure Historian"
-                #         data=data)
+                    # They clicked display in browser
+
+                    bushing_serials = []
     elif request.method == 'GET':
         return render_template('data_extraction.html', title="Plants Input"
                                " Page - Bushing Failure Historian",
@@ -204,7 +199,7 @@ def writecsv(bushing_serials):
     """
     Take in a list of bushing serial numbers.  Use that number to query the
     database and get a python dictionary that can be written to a file or
-    displayed.
+    displayed.  Output is an actual csv file.
     """
 
     # get column names from db
@@ -309,5 +304,50 @@ def writecsvio(bushing_serials):
         writer.writerow(bushing_dict)
 
     return csv_data
+
+
+def csvtohtml(csv_data):
+    """
+    Adapted from a snippet found on http://www.ctroms.com/ written by
+    Chris Trombley
+    """
+
+    # Open the CSV file for reading
+    reader = csv.reader(open(sys.argv[1]))
+
+    # Create the HTML file for output
+    htmlfile = open(sys.argv[2], "w")
+
+    # initialize rownum variable
+    rownum = 0
+
+    # write <table> tag
+    htmlfile.write('<table>')
+
+    # generate table contents
+    for row in reader:  # Read a single row from the CSV file
+
+        # write header row. assumes first row in csv contains header
+        if rownum == 0:
+            htmlfile.write('<tr>')  # write <tr> tag
+            for column in row:
+                htmlfile.write('<th>' + column + '</th>')
+            htmlfile.write('</tr>')
+
+        #  write all other rows
+        else:
+            htmlfile.write('<tr>')
+            for column in row:
+                htmlfile.write('<td>' + column + '</td>')
+            htmlfile.write('</tr>')
+
+        # increment row count
+        rownum += 1
+
+    # write </table> tag
+    htmlfile.write('</table>')
+
+    # print results to shell
+    # print("Created " + str(rownum) + " row table.")
 
 # end
