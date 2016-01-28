@@ -6,7 +6,7 @@ from io import StringIO
 # from csv import writer
 
 
-# index view function
+# index view function - home page
 @app.route("/")
 @app.route("/index", methods=['GET'])
 def index():
@@ -19,35 +19,49 @@ def index():
 def get_sn():
     form = bushingSN()
     form2 = bushingInfo()
+
+    # POST means the user is sending information to the app
     if request.method == 'POST':
+
         # form input isn't correct
         if form.validate() is False:
 
             # Re-show the get_sn page
             return render_template("get_sn.html", title="Bushing Lookup",
                                    form=form)
+
         # form input is correct, do the database thing
         else:
+
             # save the bushing serial number
             test_bushing_serial = form.bushingSerial.data
 
-            # grab data
+            # grab data from the db
             lookup = models.Bushing.query.\
                 filter_by(bushingSerial=test_bushing_serial).first()
+
+            # Bushing isn't in the database, send them to enter new data
             if lookup is None:
-                # Bushing isn't in the database, send them to enter new data
+
+                # reshow plants page, display new bushing message
                 return render_template('plants.html',
                                        title="Plants Input Page - Bushing Fail"
                                        "ure Historian", form=form2,
                                        newBushingEntry=True)
+
+            # Bushing is in the database, send them to edit data & display
+            # the known data from the db            
             else:
-                # Bushing is in the database, send them to edit data & display
-                # the known data from the db
+
+                # reshow plants page, display bushing exists message, and
+                # send the bushing data to the page for dispaly in the form
+                # fields
                 return render_template('plants.html', title="Plants Input Page"
                                        " - Bushing Failure Historian",
                                        form=form2, lookup=lookup,
                                        bushingExists=True)
 
+    # We're simply displaying the page, not getting user input
     elif request.method == 'GET':
         return render_template("get_sn.html", title="Bushing Lookup",
                                form=form)
@@ -57,21 +71,28 @@ def get_sn():
 @app.route("/plants", methods=['GET', 'POST'])
 def plants():
     form = bushingInfo()
+
+    # POST means the user is sending information to the app
     if request.method == 'POST':
+
+        # form input isn't correct
         if form.validate() is False:
 
             # Re-show the plants page
             return render_template('plants.html', title="Plants Input Page - "
                                    "Bushing Failure Historian", form=form)
+
+        # form input is correct, do the database thing
         else:
-            # Store the bushing data to the database
 
+            # query the database for bushing details
             test_bushing_serial = form.bushingSerial.data
-
             lookup = models.Bushing.query.filter_by(
                 bushingSerial=test_bushing_serial).first()
 
-            if lookup is None:  # bushing doesn't exist...add it
+            # bushing doesn't exist...add it
+            if lookup is None:
+
                 # First, grab the form data and put it in a new bushing object
                 new_bushing = models.Bushing(
                     bushingSerial=form.bushingSerial.data,
@@ -91,7 +112,12 @@ def plants():
 
                 # Commit the new bushing to the database
                 db.session.commit()
-            else:  # bushing exists, update it
+
+            # bushing exists in the database.
+            else:
+
+                # if the form field has data in it, send it to the database
+                # overwriting what previously existed
                 if form.bushingModel.data:
                     lookup.bushingModel = form.bushingModel.data
                 if form.bushingPlant.data:
@@ -117,7 +143,11 @@ def plants():
 
             # Kick the user back to the plants page with sucess flag
             return render_template("plants.html", success=True)
+
+    # We're simply displaying the page, not getting user input
     elif request.method == 'GET':
+
+        # Show the plants page
         return render_template('plants.html', title="Plants Input Page - "
                                "Bushing Failure Historian", form=form)
 
@@ -125,6 +155,8 @@ def plants():
 # documentation page
 @app.route("/documentation")
 def documentation():
+
+    # display the page without any additional data
     return render_template("documentation.html",
                            title="Documentation - Bushing Failure Historian")
 
@@ -134,26 +166,33 @@ def documentation():
 def data_extraction():
     form = singleExtract()
 
+    # POST means the user is sending information to the app
     if request.method == 'POST':
-        # top buttons chosen (single bushing)
+
+        # they've pressed one of the top buttons (single bushing)
         if (request.form['submit'] == 'Download CSV' or
                 request.form['submit'] == 'Display in Browser'):
+
             # form entry isn't correct
             if form.validate() is False:
+
                 # Re-show the plants page
                 return render_template('data_extraction.html', title="Plants I"
                                        "nput Page - Bushing Failure Historian",
                                        form=form)
+
             # form input is correct, do the database thing
             else:
-                # save the bushing serial number
+                # query the database for bushing details
                 test_bushing_serial = form.bushingSerial.data
-                # grab data
                 lookup = models.Bushing.query.filter_by(
                     bushingSerial=test_bushing_serial).first()
 
-                # Bushing isn't in the database, throw an error.
+                # Bushing isn't in the database
                 if lookup is None:
+
+                    # reshow data_extraction page, but pass key to show no
+                    # bushing error
                     return render_template('data_extraction.html', title="Plan"
                                            "ts Input Page - Bushing Failure Hi"
                                            "storian", form=form,
@@ -162,7 +201,8 @@ def data_extraction():
                 # Bushing is in the database, get them the information
                 # and process button presses)
                 else:
-                    # They clicked download single csv
+
+                    # They clicked download single csv button
                     if request.form['submit'] == 'Download CSV':
 
                         # grab the bushingSN they put in the form and
@@ -184,7 +224,10 @@ def data_extraction():
                     # They clicked display single bushing in browser
                     else:  # request.form['submit'] == 'Display in Browser':
 
-                        # start just like option above
+                        # grab the bushingSN they put in the form and
+                        # send it to writecsvio which will return a
+                        # stringIO object with the contents of the csv
+                        # file written to it.
                         bushing_serials = []
                         bushing_serials.append(test_bushing_serial)
                         csv_data = writecsvio(bushing_serials)
@@ -193,12 +236,16 @@ def data_extraction():
                         html_stringio = csvtohtml(csv_data)
                         html_data = html_stringio.getvalue()
 
+                        # show display page and send the html data we just got
                         return render_template('display.html',
                                                title="Results Display - Bushin"
                                                "gFailure Historian", form=form,
                                                data=Markup(html_data))
-        # bottom buttons chosen (all bushings)
+
+        # bottom buttons chosen (all bushings).  This section mostly needed
+        # because these buttons don't need the form to validate.
         else:
+
             # They clicked download all bushings in a csv
             if request.form['submit'] == 'CSV':
 
@@ -234,12 +281,16 @@ def data_extraction():
                 html_stringio = csvtohtml(csv_data)
                 html_data = html_stringio.getvalue()
 
+                # show display page and send the html data we just got
                 return render_template('display.html',
                                        title="Results Display - Bushing "
                                        "Failure Historian", form=form,
                                        data=Markup(html_data))
-    # request method is GET
+
+    # request method is GET, simply show the page
     elif request.method == 'GET':
+
+        # show the data_extraction page
         return render_template('data_extraction.html', title="Plants Input"
                                " Page - Bushing Failure Historian",
                                form=form)
@@ -247,6 +298,10 @@ def data_extraction():
 
 @app.route("/display.html")
 def display(data):
+
+    # show the display page with bushing data passed to it.
+    # mostly this will be called from the data_extraction page, not directly
+    # from a link
     return render_template('display.html',
                            title="Data Display - Bushing Failure Historian",
                            data=data)
@@ -262,7 +317,7 @@ def writecsvio(bushing_serials):
     # get column names from db
     fieldnames = [m.key for m in models.Bushing.__table__.columns]
 
-    # get column names directly
+    # convert between database entry id and human readable field names
     column_hash = {
         'id': 'ID',
         'bushingSerial': 'Serial',
@@ -277,26 +332,34 @@ def writecsvio(bushing_serials):
         'reason2Comments': 'Comments2'
     }
 
-    # get column names in order
+    # get column names in order using the hash conversion
     colnames = []
     for f in fieldnames:
         colnames.append(column_hash[f])
 
+    # make a new StringIO object (file-like memory object)
     csv_data = StringIO()
+
+    # start up the csv writer which will write csv data into the StringIO
+    # object
     writer = csv.DictWriter(csv_data, fieldnames=colnames)
+
+    # write the first line of column headers
     writer.writeheader()
 
+    # load the bushings from the list of serials.  this works whether we pass
+    # a single bushingSN or multiple.
     for b in bushing_serials:
-        # load the single bushing db info
         bushing = models.Bushing.query.filter_by(bushingSerial=b).first()
 
-        # make the bushing dictionary
+        # make the dictionary which will be written into csv format
         bushing_dict = bushing.__dict__
 
-        # remove the extra sqlalchemy key/value
+        # remove the extra sqlalchemy key/value that is always present
         del bushing_dict['_sa_instance_state']
 
-        # fix column names
+        # fix column names using column_hash for all of the names in the
+        # dictionary
         for d in bushing_dict:
             if d in column_hash.keys():
                 bushing_dict[column_hash[d]] = bushing_dict.pop(d)
@@ -310,11 +373,14 @@ def writecsvio(bushing_serials):
 def csvtohtml(memory_file):
     """
     Adapted from a snippet found on http://www.ctroms.com/ written by
-    Chris Trombley
+    Chris Trombley.  Pass in a StringIO memory file with csv data... generally
+    one that was created by the writecsvio function above.  We'll get another
+    stringIO object with html table data which can be plugged into a page to
+    produce a table.
     """
 
     # Open the CSV file for reading, and make into a reader object
-    memory_file.seek(0)  # who knows why this needs to happen
+    memory_file.seek(0)  # who knows why this needs to happen, but it does
     reader = csv.reader(memory_file.readlines(), delimiter=',')
 
     # Create the HTML file for output
@@ -324,13 +390,14 @@ def csvtohtml(memory_file):
     rownum = 0
     colnum = 0
 
-    # write <table> tag
+    # write opening <table> tag
     htmlfile.write('<table>')
 
     # generate table contents
     for row in reader:  # Read a single row from the CSV file
 
-        # write header row. assumes first row in csv contains header
+        # write header row. assumes first row in csv contains header.  Also
+        # put classes into each column so we can size them.
         if rownum == 0:
             htmlfile.write('<tr class="first_row">')  # write <tr> tag
             colnum = 0
@@ -340,7 +407,9 @@ def csvtohtml(memory_file):
                 colnum += 1
             htmlfile.write('</tr>')
 
-        #  write all other rows
+        # write all other odd rows and add an odd class so we can style
+        # every other row pretty.  Also put classes into each column so 
+        # we can size them.
         elif rownum % 2 == 1:
             htmlfile.write('<tr class="odd_row">')
             colnum = 0
@@ -350,6 +419,9 @@ def csvtohtml(memory_file):
                 colnum += 1
             htmlfile.write('</tr>')
 
+        # write all other even rows and add an even class so we can style
+        # every other row pretty.  Also put classes into each column so we
+        # can size them.
         else:
             htmlfile.write('<tr class="even_row">')
             colnum = 0
@@ -362,7 +434,7 @@ def csvtohtml(memory_file):
         # increment row count
         rownum += 1
 
-    # write </table> tag
+    # write close </table> tag
     htmlfile.write('</table>')
 
     return htmlfile
