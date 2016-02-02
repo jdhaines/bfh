@@ -1,0 +1,12 @@
+site_name: Bushing Handbook
+
+theme: readthedocs
+
+docs_dir: static/docs/
+site_dir: pages
+
+pages:
+- Home: 'home.md'
+- Troubleshooting:
+    - 'Water': 'troubleshooting/water.md'
+    - 'Profile': 'troubleshooting/profile.md'

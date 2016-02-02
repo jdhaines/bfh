@@ -1,15 +1,17 @@
+"""Views module for the flask app."""
+
 from flask import render_template, request, make_response, Markup  # flash
-from app import app, db, models
+from app import app, db, models, pages
 from .forms import bushingInfo, bushingSN, singleExtract
 import csv
 from io import StringIO
-# from csv import writer
 
 
 # index view function - home page
 @app.route("/")
 @app.route("/index", methods=['GET'])
 def index():
+    """Display the home (index) page."""
     return render_template("index.html",
                            title="Bushing Failure Historian",)
 
@@ -17,6 +19,7 @@ def index():
 # get_sn page
 @app.route("/get_sn", methods=['GET', 'POST'])
 def get_sn():
+    """Display the get_sn page."""
     form = bushingSN()
     form2 = bushingInfo()
 
@@ -50,7 +53,7 @@ def get_sn():
                                        newBushingEntry=True)
 
             # Bushing is in the database, send them to edit data & display
-            # the known data from the db            
+            # the known data from the db
             else:
 
                 # reshow plants page, display bushing exists message, and
@@ -70,6 +73,7 @@ def get_sn():
 # plants page
 @app.route("/plants", methods=['GET', 'POST'])
 def plants():
+    """Display the plants page."""
     form = bushingInfo()
 
     # POST means the user is sending information to the app
@@ -155,7 +159,7 @@ def plants():
 # documentation page
 @app.route("/documentation")
 def documentation():
-
+    """Display the documentation page."""
     # display the page without any additional data
     return render_template("documentation.html",
                            title="Documentation - Bushing Failure Historian")
@@ -164,6 +168,7 @@ def documentation():
 # data extraction page
 @app.route("/data_extraction", methods=['GET', 'POST'])
 def data_extraction():
+    """Display data_extraction page."""
     form = singleExtract()
 
     # POST means the user is sending information to the app
@@ -298,22 +303,32 @@ def data_extraction():
 
 @app.route("/display.html")
 def display(data):
+    """
+    Show the display page with bushing data passed to it.
 
-    # show the display page with bushing data passed to it.
-    # mostly this will be called from the data_extraction page, not directly
-    # from a link
+    mostly this will be called from the data_extraction page, not directly
+    from a link
+    """
     return render_template('display.html',
                            title="Data Display - Bushing Failure Historian",
                            data=data)
 
 
+@app.route('/<path:path>/')
+def page(path):
+    """Send static file will guess the correct MIME type."""
+    page = pages.get_or_404(path)
+    return render_template('page.html', page=page, pages=pages)
+
+
 def writecsvio(bushing_serials):
     """
+    Take list of bushing serial numbers, output stringIO with csv data.
+
     Take in a list of bushing serial numbers.  Use that number to query the
     database and get a python dictionary that can be written to a file or
     displayed.  In this case, save the file to a stringIO object.
     """
-
     # get column names from db
     fieldnames = [m.key for m in models.Bushing.__table__.columns]
 
@@ -372,13 +387,14 @@ def writecsvio(bushing_serials):
 
 def csvtohtml(memory_file):
     """
+    Take in stringIO csv and output stringIO with html.
+
     Adapted from a snippet found on http://www.ctroms.com/ written by
     Chris Trombley.  Pass in a StringIO memory file with csv data... generally
     one that was created by the writecsvio function above.  We'll get another
     stringIO object with html table data which can be plugged into a page to
     produce a table.
     """
-
     # Open the CSV file for reading, and make into a reader object
     memory_file.seek(0)  # who knows why this needs to happen, but it does
     reader = csv.reader(memory_file.readlines(), delimiter=',')
@@ -408,7 +424,7 @@ def csvtohtml(memory_file):
             htmlfile.write('</tr>')
 
         # write all other odd rows and add an odd class so we can style
-        # every other row pretty.  Also put classes into each column so 
+        # every other row pretty.  Also put classes into each column so
         # we can size them.
         elif rownum % 2 == 1:
             htmlfile.write('<tr class="odd_row">')

@@ -1,0 +1,18 @@
+{% extends "page_wrapper.html" %}
+{% block content %}
+<!-- main div is started here -->
+	<h2>{{ page.title }}</h2>
+	<div class="page_nav">
+		<ul>
+			{% for page in pages %}
+				<li>
+					<a href="{{url_for("page",path=page.path)}}">{{page.title}}</a>
+				</li>
+			{% else %}
+				<li>No stuff.</li>
+			{% endfor %}
+		</ul>
+	</div>  <!-- end page nav -->
+    {{ page.html|safe }}
+<!-- main div is ended here -->
+{% endblock %}
