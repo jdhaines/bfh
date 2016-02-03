@@ -1,10 +1,14 @@
 """Views module for the flask app."""
 
-from flask import render_template, request, make_response, Markup  # flash
-from app import app, db, models, pages
-from .forms import bushingInfo, bushingSN, singleExtract
 import csv
+
 from io import StringIO
+
+from app import app, db, models
+
+from flask import Markup, abort, make_response, render_template, request
+
+from .forms import bushingInfo, bushingSN, singleExtract
 
 
 # index view function - home page
@@ -314,11 +318,24 @@ def display(data):
                            data=data)
 
 
-@app.route('/<path:path>/')
-def page(path):
-    """Send static file will guess the correct MIME type."""
-    page = pages.get_or_404(path)
-    return render_template('page.html', page=page, pages=pages)
+# @app.route('/<path:path>/')
+# def page(path):
+#     """Send static file will guess the correct MIME type."""
+#     page = pages.get_or_404(path)
+#     return render_template('page.html', page=page, pages=pages)
+
+
+@app.route('/<path:path>')
+def catch_all(path):
+    """Catch all routing."""
+    if not app.debug:
+        abort(404)
+    try:
+        f = open(path)
+    except IOError:  # as e:
+        abort(404)
+        return
+    return f.read()
 
 
 def writecsvio(bushing_serials):

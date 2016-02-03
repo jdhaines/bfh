@@ -2,11 +2,40 @@
 {% block content %}
 <div class="docwrapper">
 <h1>Documentation - Bushing Failure Historian</h1>  
-	<h2>App Framework and Tools</h2>
+	<h2>App Framework</h2>
 	<p>This app is built using the <a href="http://flask.pocoo.org/">Flask microframework</a>.  This is a python based microframework designed to make buildings powerful apps easier using open source tools.  Flask is freely available under a <a href="https://en.wikipedia.org/wiki/BSD_licenses#3-clause_license_.28.22Revised_BSD_License.22.2C_.22New_BSD_License.22.2C_or_.22Modified_BSD_License.22.29">New BSD License</a> and is suitable for corporate developement.</p>
     <hr class="style-one" />
     <h2>Database Schema</h2>
-    <p>The database is a sqlite db.  It follows the schema shown in the image below.  The xml code (which can be found <a href="static/docs/sql_designer.txt">here</a>) is used to load the schema graphic at <a href="http://ondras.zarovi.cz/sql/demo/">SQL Designer</a> if we need to update the schema.</p>
-    <p id="sqlimg"><img src="static/img/sql_layout.jpg"/></p>
+    <p>The database is a sqlite db.  It follows the schema shown in the image below.  The xml code (which can be found <a href="docs/sql_designer.txt">here</a>) is used to load the schema graphic at <a href="http://ondras.zarovi.cz/sql/demo/">SQL Designer</a> if we need to update the schema.</p>
+    <p id="sqlimg"><img src="img/sql_layout.jpg"/></p>
+    <hr class="style-one" />
+    <h2>Other Tools</h2>
+    <p>The bushing handbook is made primarily using <a href="http://www.mkdocs.org/">mkdocs</a>.  This tool is available under a <a href="https://en.wikipedia.org/wiki/BSD_licenses#3-clause_license_.28.22Revised_BSD_License.22.2C_.22New_BSD_License.22.2C_or_.22Modified_BSD_License.22.29">New BSD License</a> and is suitable for corporate developement.</p>
+    <p>Multiple other plugins, packages, and tools are used through python's extension system which are all suitable for corporate use.  This list is shown below along with it's license:</p>
+    <ul>
+    	<li>click (<a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_.28original_.22BSD_License.22.29">BSD</a>)</li>
+    	<li>decorator (<a href="https://en.wikipedia.org/wiki/BSD_licenses#3-clause_license_.28.22Revised_BSD_License.22.2C_.22New_BSD_License.22.2C_or_.22Modified_BSD_License.22.29">newBSD</a>)</li>
+    	<li>flask (<a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_.28original_.22BSD_License.22.29">BSD</a>)</li>
+    	<li>flask_flatpages (<a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_.28original_.22BSD_License.22.29">BSD</a>)</li>
+    	<li>flask_sqlalchemy (<a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_.28original_.22BSD_License.22.29">BSD</a>)</li>
+    	<li>flask_wtf (<a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_.28original_.22BSD_License.22.29">BSD</a>)</li>
+    	<li>itsdangerous (<a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_.28original_.22BSD_License.22.29">BSD</a>)</li>
+    	<li>jinja2 (<a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_.28original_.22BSD_License.22.29">BSD</a>)</li>
+    	<li>livereload (<a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_.28original_.22BSD_License.22.29">BSD</a>)</li>
+    	<li>markdown (<a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_.28original_.22BSD_License.22.29">BSD</a>)</li>
+    	<li>markupsafe (<a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_.28original_.22BSD_License.22.29">BSD</a>)</li>
+    	<li>migrate (<a href="https://en.wikipedia.org/wiki/MIT_License">MIT</a>)</li>
+    	<li>mkdocs (<a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_.28original_.22BSD_License.22.29">BSD</a>)</li>
+    	<li>pbr (<a href="https://en.wikipedia.org/wiki/Apache_License">Apache</a>)</li>
+    	<li>pygments (<a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_.28original_.22BSD_License.22.29">BSD</a>)</li>
+    	<li>setuptools (ZPL)</li>
+    	<li>sqlalchemy (<a href="https://en.wikipedia.org/wiki/MIT_License">MIT</a>)</li>
+    	<li>sqlalchemy_migrate (<a href="https://en.wikipedia.org/wiki/Apache_License">Apache</a>)</li>
+    	<li>tempita (<a href="https://en.wikipedia.org/wiki/MIT_License">MIT</a>)</li>
+    	<li>tornado (<a href="https://en.wikipedia.org/wiki/Apache_License">Apache</a>)</li>
+    	<li>werkzeug (<a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_.28original_.22BSD_License.22.29">BSD</a>)</li>
+    	<li>wtforms (<a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_.28original_.22BSD_License.22.29">BSD</a>)</li>
+    	<li>yaml (WTFPL)</li>
+    </ul>
 </div> <!-- end docwrapper -->
 {% endblock %}

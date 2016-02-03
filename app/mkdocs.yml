@@ -1,12 +1,20 @@
 site_name: Bushing Handbook
 
+# theme_dir: cinder
 theme: readthedocs
 
-docs_dir: static/docs/
-site_dir: pages
+docs_dir: mkdocs_files
+site_dir: static/handbook
+use_directory_urls: false
+site_favicon: favicon.ico
 
 pages:
-- Home: 'home.md'
-- Troubleshooting:
-    - 'Water': 'troubleshooting/water.md'
-    - 'Profile': 'troubleshooting/profile.md'
+- Home: 'index.md'
+- Bushing Issues:
+    - Profile: bushing_issues/profile.md
+- Subsystems:
+    - Cooling: subsystems/cooling.md
+    - Gathering: subsystems/gathering.md
+- Utilities:
+    - Water: utilities/water.md
+    - Power: utilities/power.md
